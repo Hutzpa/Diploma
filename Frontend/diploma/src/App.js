@@ -14,9 +14,9 @@ class App extends Component {
   state = {};
   render() {
     return (
-      <div>
-        <Navbar />
+      <React.Fragment>
         <div className="content">
+          <Navbar />
           <Switch>
             <Route path={ClientRouter.login} component={Login} />
             <Route path={ClientRouter.register} component={Register} />
@@ -24,7 +24,7 @@ class App extends Component {
             <Redirect to={ClientRouter.home} />
           </Switch>
         </div>
-      </div>
+      </React.Fragment>
     );
   }
 }
