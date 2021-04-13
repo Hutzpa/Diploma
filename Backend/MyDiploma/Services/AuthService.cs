@@ -17,7 +17,7 @@ namespace MyDiploma.Services
     public interface IAuthService
     {
         AuthenticateResponse Authenticate(AuthenticateRequest model);
-        Task<bool> RegisterAsync(RegisterRequest request);
+        bool RegisterAsync(RegisterRequest request,out string error);
     }
     public class AuthService : IAuthService
     {
@@ -42,8 +42,16 @@ namespace MyDiploma.Services
             return new AuthenticateResponse(user, token);
         }
 
-        public async Task<bool> RegisterAsync(RegisterRequest request)
+        public bool RegisterAsync(RegisterRequest request, out string error)
         {
+            error = "";
+            var tryUser = _dbContext.Users.SingleOrDefault(o => o.Username == request.Username);
+            if (tryUser != null)
+            {
+                error = "User with this username is already registred";
+                return false;
+            }
+
             User user = new User
             {
                 Username = request.Username,
@@ -51,8 +59,13 @@ namespace MyDiploma.Services
                 LastName = request.LastName,
                 PasswordHash = _hashService.Hash(request.Password),
             };
-            await _dbContext.Users.AddAsync(user);
-            return await _dbContext.SaveChangesAsync() > 0;
+            _dbContext.Users.Add(user);
+            if (_dbContext.SaveChanges() > 0)
+            {
+                error = "Server error, try again later";
+                return false;
+                    }
+            return true;
         }
 
 

@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import Joi from "joi-browser";
 
 import Input from "../../Reusable/Input";
+import ServerRouter from "../../Network/ServerRouter";
+import SendReq from "../../Network/SendReq";
 
 class Login extends Component {
 	state = {
@@ -14,14 +16,20 @@ class Login extends Component {
 		password: Joi.string().required(),
 	};
 
-	handleSubmit = (e) => {
+	handleSubmit = async (e) => {
 		e.preventDefault();
 		console.log("SUbmitted");
 
-		const errors = this.validate();
-		this.setState({ errors: errors || {} });
-		if (errors) return;
-		//call the server and redirect user
+		try {
+			let result = await SendReq.post(ServerRouter.auth, this.state.account);
+			console.log(result);
+		} catch (ex) {
+			if (ex.response && ex.response.status === 400) {
+				const errors = { ...this.state.errors };
+				errors.username = ex.response.data.message;
+				this.setState({ errors });
+			}
+		}
 	};
 
 	validate = () => {

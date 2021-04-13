@@ -37,10 +37,10 @@ namespace MyDiploma.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(request);
-
-            if (await _authService.RegisterAsync(request))
+            string error = "";
+            if (_authService.RegisterAsync(request,out error))
                 return Ok(true);
-            return BadRequest(new { message = "Registration attempt went wrong, try again" });
+            return BadRequest(new { message = error });
         }
 
        
