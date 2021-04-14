@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import Input from "../../Reusable/Input";
 import ServerRouter from "../../Network/ServerRouter";
 import SendReq from "../../Network/SendReq";
+import ClientRouter from "./../../Network/ClientRouter";
 
 class Register extends Component {
 	state = {
@@ -17,6 +18,7 @@ class Register extends Component {
 				ServerRouter.register,
 				this.state.account
 			);
+			this.props.history.push(ClientRouter.login);
 		} catch (ex) {
 			if (ex.response && ex.response.status === 400) {
 				const errors = { ...this.state.errors };

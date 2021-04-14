@@ -17,7 +17,7 @@ namespace MyDiploma.Services
     public interface IAuthService
     {
         AuthenticateResponse Authenticate(AuthenticateRequest model);
-        bool RegisterAsync(RegisterRequest request,out string error);
+        bool RegisterAsync(RegisterRequest request, out string error);
     }
     public class AuthService : IAuthService
     {
@@ -25,7 +25,7 @@ namespace MyDiploma.Services
         private DiplomaContext _dbContext;
         private IHashService _hashService;
 
-        public AuthService(IOptions<AppSettings> appSettings, DiplomaContext dbContext,IHashService hashService)
+        public AuthService(IOptions<AppSettings> appSettings, DiplomaContext dbContext, IHashService hashService)
         {
             _appSettings = appSettings.Value;
             _dbContext = dbContext;
@@ -34,8 +34,8 @@ namespace MyDiploma.Services
 
         public AuthenticateResponse Authenticate(AuthenticateRequest model)
         {
-            var user = _dbContext.Users.SingleOrDefault(o => o.Username == model.Username);       
-             // return null if user not found
+            var user = _dbContext.Users.SingleOrDefault(o => o.Username == model.Username);
+            // return null if user not found
             if (user == null || !_hashService.Verify(model.Password, user.PasswordHash)) return null;
             // authentication successful so generate jwt token
             var token = GenerateJwtToken(user);
@@ -60,11 +60,11 @@ namespace MyDiploma.Services
                 PasswordHash = _hashService.Hash(request.Password),
             };
             _dbContext.Users.Add(user);
-            if (_dbContext.SaveChanges() > 0)
+            if (_dbContext.SaveChanges() == 0)
             {
                 error = "Server error, try again later";
                 return false;
-                    }
+            }
             return true;
         }
 
@@ -77,7 +77,10 @@ namespace MyDiploma.Services
             var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()) }),
+                Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()),
+                    new Claim("firstName",user.FirstName),
+                    new Claim("lastName",user.LastName),
+                    new Claim("username",user.Username) }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };

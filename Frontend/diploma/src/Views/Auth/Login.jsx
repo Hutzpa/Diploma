@@ -4,6 +4,7 @@ import Joi from "joi-browser";
 import Input from "../../Reusable/Input";
 import ServerRouter from "../../Network/ServerRouter";
 import SendReq from "../../Network/SendReq";
+import ClientRouter from "./../../Network/ClientRouter";
 
 class Login extends Component {
 	state = {
@@ -21,8 +22,10 @@ class Login extends Component {
 		console.log("SUbmitted");
 
 		try {
-			let result = await SendReq.post(ServerRouter.auth, this.state.account);
-			console.log(result);
+			let { data } = await SendReq.post(ServerRouter.auth, this.state.account);
+			localStorage.setItem("JWT", data.token);
+			//this.props.history.push(ClientRouter.home);
+			window.location = ClientRouter.home;
 		} catch (ex) {
 			if (ex.response && ex.response.status === 400) {
 				const errors = { ...this.state.errors };
