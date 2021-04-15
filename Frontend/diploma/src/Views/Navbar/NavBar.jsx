@@ -8,9 +8,6 @@ const Navbar = ({ user }) => {
 			<div className="navbar-nav">
 				<label>Navbar</label>
 
-				<Link className="nav-item nav-link" to={ClientRouter.home}>
-					Home
-				</Link>
 				{!user && (
 					<React.Fragment>
 						<Link to={ClientRouter.login}> Login</Link>
@@ -19,7 +16,11 @@ const Navbar = ({ user }) => {
 				)}
 				{user && (
 					<React.Fragment>
-						<Link to={ClientRouter.profile}>{user.firstName}</Link>
+						<Link className="nav-item nav-link" to={ClientRouter.home}>
+							Home
+						</Link>
+						<Link to={ClientRouter.search}>Search</Link>
+						<Link to={ClientRouter.profile}>Welcome {user.firstName}</Link>
 						<Link to={ClientRouter.logout}>Logout</Link>
 					</React.Fragment>
 				)}

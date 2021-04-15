@@ -24,7 +24,6 @@ class Login extends Component {
 		try {
 			let { data } = await SendReq.post(ServerRouter.auth, this.state.account);
 			localStorage.setItem("JWT", data.token);
-			//this.props.history.push(ClientRouter.home);
 			window.location = ClientRouter.home;
 		} catch (ex) {
 			if (ex.response && ex.response.status === 400) {

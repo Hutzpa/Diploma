@@ -9,10 +9,11 @@ const Input = ({
 	placeholder,
 	error,
 	required,
+	maxLength,
 }) => {
 	return (
 		<div className="form-group">
-			<label htmlFor={name}>{label}</label>
+			{label && <label htmlFor={name}>{label}</label>}
 			<input
 				value={value}
 				name={name}
@@ -22,6 +23,7 @@ const Input = ({
 				className="form-control"
 				required={required}
 				placeholder={placeholder ? placeholder : ""}
+				maxLength={maxLength ? maxLength : ""}
 			/>
 			{error && <div className="alert alert-danger">{error}</div>}
 		</div>
