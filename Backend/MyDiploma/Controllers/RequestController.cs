@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyDiploma.Data;
+using MyDiploma.Models.Contacts;
 using MyDiploma.Models.Search;
 using System;
 using System.Collections.Generic;
@@ -29,6 +30,12 @@ namespace MyDiploma.Controllers
         {
             var data = await _context.Users.Where(o => o.FirstName.Contains(request.Query) || o.LastName.Contains(request.Query) || o.Username.Contains(request.Query)).ToListAsync();
             return Ok(data);
+        }
+
+        [HttpPost("send")]
+        public IActionResult SendContactsRequest(ContactsRequest request)
+        {
+            return BadRequest();
         }
     }
 }
