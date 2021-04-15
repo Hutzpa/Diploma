@@ -25,11 +25,18 @@ class Search extends Component {
 		this.setState({ matches });
 	};
 
-	addToContacts = (e, id) => {
+	addToContacts = async (e, id) => {
 		e.preventDefault();
-
-		console.log(this.state.user);
-		console.log(id);
+		const { user } = this.state;
+		console.log(`Sender - ${user.id}`);
+		console.log(`Reciever id - ${id}`);
+		const obj = {
+			SenderId: user.id,
+			ReceiverId: id,
+		};
+		let result = await SendReq.post(ServerRouter.contactRequest, obj);
+		console.log(result);
+		if (result.status === 200) alert("fofoof");
 	};
 
 	render() {

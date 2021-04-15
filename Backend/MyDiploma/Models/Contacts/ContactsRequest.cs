@@ -8,7 +8,7 @@ namespace MyDiploma.Models.Contacts
 {
     public class ContactsRequest
     {
-        public int Sender { get; set; }
-        public int Receiver { get; set; }
+        public int SenderId { get; set; }
+        public int ReceiverId { get; set; }
     }
 }

@@ -12,5 +12,9 @@ namespace MyDiploma.Entities
         public int Id { get; set; }
         public string Name { get; set; }
         public RoomType RoomType { get; set; }
+
+        public List<Participants> Participants { get; set; }
+
+        public List<Message> Messages { get; set; }
     }
 }

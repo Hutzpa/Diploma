@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace MyDiploma.Entities
 {
@@ -11,5 +12,11 @@ namespace MyDiploma.Entities
 
         [JsonIgnore]
         public string PasswordHash { get; set; }
+
+        [JsonIgnore]
+        public List<Contact> Contacts { get; set; }
+
+        [JsonIgnore]
+        public List<Message> Messages { get; set; }
     }
 }

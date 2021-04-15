@@ -6,7 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using MyDiploma.Data;
 using MyDiploma.Helpers;
 using MyDiploma.Services;
-
 namespace MyDiploma
 {
     public class Startup
@@ -28,7 +27,7 @@ namespace MyDiploma
 
           
             services.AddCors();
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
 
 
             // configure strongly typed settings object

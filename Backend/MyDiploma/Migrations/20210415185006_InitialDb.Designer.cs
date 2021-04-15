@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyDiploma.Data;
 
 namespace MyDiploma.Migrations
 {
     [DbContext(typeof(DiplomaContext))]
-    partial class DiplomaContextModelSnapshot : ModelSnapshot
+    [Migration("20210415185006_InitialDb")]
+    partial class InitialDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,18 +41,18 @@ namespace MyDiploma.Migrations
 
             modelBuilder.Entity("MyDiploma.Entities.Contact", b =>
                 {
-                    b.Property<int>("SenderId")
+                    b.Property<int>("User1Id")
                         .HasColumnType("int");
 
-                    b.Property<int>("ReceiverId")
+                    b.Property<int>("User2Id")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsApproved")
                         .HasColumnType("bit");
 
-                    b.HasKey("SenderId", "ReceiverId");
+                    b.HasKey("User1Id", "User2Id");
 
-                    b.HasIndex("ReceiverId");
+                    b.HasIndex("User2Id");
 
                     b.ToTable("Contacts");
                 });
@@ -128,16 +130,16 @@ namespace MyDiploma.Migrations
 
             modelBuilder.Entity("MyDiploma.Entities.Contact", b =>
                 {
-                    b.HasOne("MyDiploma.Entities.User", "Receiver")
-                        .WithMany()
-                        .HasForeignKey("ReceiverId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("MyDiploma.Entities.User", "User1")
+                        .WithMany("Contacts")
+                        .HasForeignKey("User1Id")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("MyDiploma.Entities.User", "Sender")
-                        .WithMany("Contacts")
-                        .HasForeignKey("SenderId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                    b.HasOne("MyDiploma.Entities.User", "User2")
+                        .WithMany()
+                        .HasForeignKey("User2Id")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
