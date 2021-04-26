@@ -47,7 +47,13 @@ class App extends Component {
 									path={ClientRouter.search}
 									render={(props) => <Search user={user} {...props} />}
 								/>
+
 								<Route
+									path={ClientRouter.profile + "/:id"}
+									render={(props) => <Profile user={user} {...props} />}
+								/>
+								<Route
+									exact
 									path={ClientRouter.profile}
 									render={(props) => <Profile user={user} {...props} />}
 								/>

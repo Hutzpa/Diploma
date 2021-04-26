@@ -3,7 +3,7 @@ const ClientRouter = {
 	register: "/register",
 	home: "/home",
 	logout: "/logout",
-	profile: "/profile",
+	profile: `/profile`,
 	search: "/search",
 };
 

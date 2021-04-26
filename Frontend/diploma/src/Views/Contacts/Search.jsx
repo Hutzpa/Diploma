@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import ClientRouter from "../../Network/ClientRouter";
 import ServerRouter from "../../Network/ServerRouter";
 import Input from "../../Reusable/Input";
 import SendReq from "./../../Network/SendReq";
@@ -59,7 +61,11 @@ class Search extends Component {
 								return (
 									<tr key={user.id}>
 										<td>{/* photo */}</td>
-										<td>{user.lastName}</td>
+										<td>
+											<Link to={ClientRouter.profile + `/${user.id}`}>
+												{user.lastName}
+											</Link>
+										</td>
 										<td>
 											<form onSubmit={(e) => this.addToContacts(e, user.id)}>
 												<input type="submit" value="Add to contacts" />
