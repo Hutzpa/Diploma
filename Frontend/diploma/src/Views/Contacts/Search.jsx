@@ -38,7 +38,7 @@ class Search extends Component {
 		};
 		let result = await SendReq.post(ServerRouter.contactRequest, obj);
 		console.log(result);
-		if (result.status === 200) alert("fofoof");
+		if (result.status === 200) alert("Sended");
 	};
 
 	render() {

@@ -13,6 +13,8 @@ import Home from "./Views/Home/Home";
 import Logout from "./Views/Auth/Logout";
 import Profile from "./Views/Profile/Profile";
 import Search from "./Views/Contacts/Search";
+import ContactRequests from "./Views/Contacts/ContactRequests";
+import Contacts from "./Views/Contacts/Contacts";
 
 class App extends Component {
 	state = {};
@@ -56,6 +58,14 @@ class App extends Component {
 									exact
 									path={ClientRouter.profile}
 									render={(props) => <Profile user={user} {...props} />}
+								/>
+								<Route
+									path={ClientRouter.requests}
+									render={(props) => <ContactRequests user={user} {...props} />}
+								/>
+								<Route
+									path={ClientRouter.contacts}
+									render={(props) => <Contacts user={user} {...props} />}
 								/>
 								<Redirect to={ClientRouter.home} />
 							</React.Fragment>

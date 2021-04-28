@@ -48,7 +48,7 @@ class Profile extends Component {
 		const { askedUser } = this.state;
 		return (
 			<div>
-				{Object.keys(askedUser).length != 0 && (
+				{Object.keys(askedUser).length !== 0 && (
 					<div>
 						{askedUser.id == currentUser.id ? (
 							""

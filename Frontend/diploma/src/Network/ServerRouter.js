@@ -6,6 +6,9 @@ const ServerRouter = {
 	search: serverUrl + "request/search",
 	contactRequest: serverUrl + "request/send",
 	specificUser: serverUrl + "user/getUser/?id=",
+	requests: serverUrl + "request/requests",
+	replyOnRequest: serverUrl + "request/decide",
+	contacts: serverUrl + "contacts",
 };
 
 export default ServerRouter;

@@ -3,11 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using MyDiploma.Data;
 using MyDiploma.Entities;
 using MyDiploma.Models.Contacts;
+using MyDiploma.Models.Request;
 using MyDiploma.Models.Search;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace MyDiploma.Controllers
@@ -26,6 +25,31 @@ namespace MyDiploma.Controllers
             //_User = (MyDiploma.Entities.User)HttpContext.Items["User"];
         }
 
+        [HttpGet("requests")]
+        public async Task<IActionResult> GetRequests()
+        {
+            Entities.User currentUser = (Entities.User)HttpContext.Items["User"];
+            return Ok(JsonSerializer.Serialize(await _context.Contacts.Include(o => o.Sender).Include(o=>o.Receiver).Where(o => o.ReceiverId == currentUser.Id && o.IsApproved == false).ToListAsync()));
+        }
+
+        [HttpPost("decide")]
+        public async Task<IActionResult> DecideAsync(DecisionRequest decision)
+        {
+            var request = await _context.Contacts.FirstOrDefaultAsync(o => o.ReceiverId == decision.ReceiverId && o.SenderId == decision.SenderId);
+            if (request == null)
+                return BadRequest();
+            if (decision.Approved)
+            {
+                request.IsApproved = true;
+                _context.Contacts.Update(request);
+            }
+            else
+            {
+                _context.Contacts.Remove(request);
+            }
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
 
 
         [HttpPost("search")]
