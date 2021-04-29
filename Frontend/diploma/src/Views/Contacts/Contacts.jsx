@@ -14,6 +14,11 @@ class Contacts extends Component {
 		console.log(this.state.contacts);
 	}
 
+	handleSubmit = async (e) => {
+		e.preventDefault();
+		this.props.history.push(); //Dialogid);
+	};
+
 	render() {
 		const { contacts } = this.state;
 		return (
@@ -27,7 +32,11 @@ class Contacts extends Component {
 										<td>{contacts.Sender.FirstName}</td>
 										<td>{contacts.Sender.LastName}</td>
 										<td>{contacts.Sender.Username}</td>
-										<td>{/* Имя контакта */}</td>
+										<td>
+											<form onSubmit={(e) => this.handleSubmit(e)}>
+												<button>Dialog</button>
+											</form>
+										</td>
 									</tr>
 								);
 							})}

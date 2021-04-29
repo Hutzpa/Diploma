@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace MyDiploma.Entities
+﻿namespace MyDiploma.Entities
 {
     public class Contact
     {

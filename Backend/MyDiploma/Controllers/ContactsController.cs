@@ -27,6 +27,9 @@ namespace MyDiploma.Controllers
         {
             Entities.User currentUser = (Entities.User)HttpContext.Items["User"];
             var contacts = await _context.Contacts.Include(o=>o.Sender).Include(o=>o.Receiver).Where(o => o.ReceiverId == currentUser.Id || o.SenderId == currentUser.Id && o.IsApproved == true).ToListAsync();
+
+            
+
             return Ok(JsonSerializer.Serialize(contacts));
         }
     }

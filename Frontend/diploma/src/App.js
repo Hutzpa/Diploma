@@ -15,6 +15,7 @@ import Profile from "./Views/Profile/Profile";
 import Search from "./Views/Contacts/Search";
 import ContactRequests from "./Views/Contacts/ContactRequests";
 import Contacts from "./Views/Contacts/Contacts";
+import Dialog from "./Views/Messages/Dialog";
 
 class App extends Component {
 	state = {};
@@ -48,6 +49,11 @@ class App extends Component {
 								<Route
 									path={ClientRouter.search}
 									render={(props) => <Search user={user} {...props} />}
+								/>
+
+								<Route
+									path={ClientRouter.chatroom + "/:id"}
+									render={(props) => <Dialog user={user} {...props} />}
 								/>
 
 								<Route

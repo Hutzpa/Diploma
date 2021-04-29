@@ -7,6 +7,7 @@ const ClientRouter = {
 	search: "/search",
 	requests: "/requests",
 	contacts: "/contacts",
+	chatroom: "/chatroom",
 };
 
 export default ClientRouter;
