@@ -11,12 +11,22 @@ class Contacts extends Component {
 		this.setState({ user: this.props.user });
 		const { data: contacts } = await SendReq.get(ServerRouter.contacts);
 		this.setState({ contacts });
+		console.log(this.state.user);
 		console.log(this.state.contacts);
 	}
 
-	handleSubmit = async (e) => {
+	handleSubmit = async (e, id) => {
 		e.preventDefault();
-		this.props.history.push(); //Dialogid);
+		console.log({
+			User1: parseInt(this.state.user.id),
+			User2: id,
+		});
+		const { data } = await SendReq.post(ServerRouter.chat, {
+			user1: this.state.user.Id,
+			user2: id,
+		});
+		console.log(data);
+		//this.props.history.push(); //Dialogid);
 	};
 
 	render() {
@@ -33,7 +43,11 @@ class Contacts extends Component {
 										<td>{contacts.Sender.LastName}</td>
 										<td>{contacts.Sender.Username}</td>
 										<td>
-											<form onSubmit={(e) => this.handleSubmit(e)}>
+											<form
+												onSubmit={(e) =>
+													this.handleSubmit(e, contacts.SenderId)
+												}
+											>
 												<button>Dialog</button>
 											</form>
 										</td>

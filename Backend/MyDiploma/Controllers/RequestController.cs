@@ -42,6 +42,19 @@ namespace MyDiploma.Controllers
             {
                 request.IsApproved = true;
                 _context.Contacts.Update(request);
+
+                // Создать диалог и добавить два контакта
+                ChatRoom chatRoom = new ChatRoom { Name = "", RoomType = Entities.Enums.RoomType.Dialog };
+                await _context.ChatRooms.AddAsync(chatRoom);
+                await _context.SaveChangesAsync();
+                var receiver = await _context.Users.FirstOrDefaultAsync(o => o.Id == decision.ReceiverId);
+                var sender = await _context.Users.FirstOrDefaultAsync(o => o.Id == decision.SenderId);
+                var participant1 = new Participants { ChatRoomId = chatRoom.Id, UserId = receiver.Id };
+                var participant2 = new Participants { ChatRoomId = chatRoom.Id, UserId = sender.Id };
+                await _context.Participants.AddAsync(participant1);
+                await _context.Participants.AddAsync(participant2);
+
+                await _context.SaveChangesAsync();
             }
             else
             {
@@ -55,8 +68,10 @@ namespace MyDiploma.Controllers
         [HttpPost("search")]
         public async Task<IActionResult> SearchAsync(SearchRequest request)
         {
-            var data = await _context.Users.Where(o => o.FirstName.Contains(request.Query) || o.LastName.Contains(request.Query) || o.Username.Contains(request.Query)).ToListAsync();         
-            return Ok(data);
+            Entities.User currentUser = (Entities.User)HttpContext.Items["User"];
+            var data = await _context.Users.Where(o => o.FirstName.Contains(request.Query) || o.LastName.Contains(request.Query) || o.Username.Contains(request.Query)).ToListAsync();
+            data.Remove(currentUser);
+            return Ok(JsonSerializer.Serialize(data));
         }
 
         [HttpPost("send")]

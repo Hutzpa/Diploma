@@ -9,7 +9,7 @@ const ServerRouter = {
 	requests: serverUrl + "request/requests",
 	replyOnRequest: serverUrl + "request/decide",
 	contacts: serverUrl + "contacts",
-	chat: serverUrl + "chat",
+	chat: serverUrl + "chat/getDialog",
 };
 
 export default ServerRouter;

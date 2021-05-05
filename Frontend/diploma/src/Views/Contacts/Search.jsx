@@ -13,6 +13,7 @@ class Search extends Component {
 
 	componentDidMount() {
 		this.setState({ user: this.props.user });
+		//console.log(this.props.user);
 	}
 
 	handleChange = async ({ currentTarget: input }) => {
@@ -25,6 +26,8 @@ class Search extends Component {
 			this.state.params
 		);
 		this.setState({ matches });
+		console.log(this.state.user);
+		console.log(matches);
 	};
 
 	addToContacts = async (e, id) => {
@@ -67,7 +70,7 @@ class Search extends Component {
 											</Link>
 										</td>
 										<td>
-											<form onSubmit={(e) => this.addToContacts(e, user.id)}>
+											<form onSubmit={(e) => this.addToContacts(e, user.Id)}>
 												<input type="submit" value="Add to contacts" />
 											</form>
 										</td>
