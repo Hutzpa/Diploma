@@ -23,16 +23,19 @@ namespace MyDiploma.Controllers
         }
 
         [HttpGet]
+        [Obsolete("Баг 2")]
         public async Task<IActionResult> GetContactsAsync()
         {
             Entities.User currentUser = (Entities.User)HttpContext.Items["User"];
 
-            
-            var contacts = await _context.Contacts.Include(o=>o.Sender).Include(o=>o.Receiver).Where(o => o.ReceiverId == currentUser.Id || o.SenderId == currentUser.Id && o.IsApproved == true).ToListAsync();
+            var whereIsSender = await _context.Contacts.Include(o => o.Sender).Where(o => o.Sender.Id == currentUser.Id).Select(o => o.Receiver).ToListAsync();
+            var whereIsReceiver = await _context.Contacts.Include(o => o.Receiver).Where(o => o.Receiver.Id == currentUser.Id).Select(o => o.Sender).ToListAsync();
+
+            var result = whereIsSender.Union(whereIsReceiver).Distinct().ToList();
 
             
 
-            return Ok(JsonSerializer.Serialize(contacts));
+            return Ok(JsonSerializer.Serialize(result));
         }
     }
 }

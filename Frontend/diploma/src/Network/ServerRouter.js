@@ -10,6 +10,7 @@ const ServerRouter = {
 	replyOnRequest: serverUrl + "request/decide",
 	contacts: serverUrl + "contacts",
 	chat: serverUrl + "chat/getDialog",
+	getMessages: serverUrl + "chat/GetMessages",
 };
 
 export default ServerRouter;

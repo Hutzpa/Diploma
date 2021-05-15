@@ -29,16 +29,20 @@ namespace MyDiploma.Controllers
         [HttpPost("GetDialog")]
         public async Task<IActionResult> GetDialogAsync(GetDialog _dialog)
         {
-            var participant1 = await _context.Participants.FirstOrDefaultAsync(o => o.UserId == _dialog.User1);
-            var participant2 = await _context.Participants.FirstOrDefaultAsync(o => o.UserId == _dialog.User2);
-            var dialogsOfUser1 = _context.ChatRooms.Where(o => o.Participants.Contains(participant1) && o.RoomType == Entities.Enums.RoomType.Dialog);
-            var dialogsOfUser2 = _context.ChatRooms.Where(o => o.Participants.Contains(participant2) && o.RoomType == Entities.Enums.RoomType.Dialog);
+            //Находим все диалоги(только ОДИНОЧНЫЕ) в которых участвует пользователь 1 и 2. Находим общий диалог среди результатов
+            var dialogsOfUser1 = await _context.Participants.Include(o => o.ChatRoom).Where(o => o.UserId == _dialog.User1 && o.ChatRoom.RoomType == Entities.Enums.RoomType.Dialog).Select(o => o.ChatRoom).ToListAsync();
+            var dialogsOfUser2 = await _context.Participants.Include(o => o.ChatRoom).Where(o => o.UserId == _dialog.User2 && o.ChatRoom.RoomType == Entities.Enums.RoomType.Dialog).Select(o => o.ChatRoom).ToListAsync();
             var dialog = dialogsOfUser1.Intersect(dialogsOfUser2).First();
+
+
             return Ok(JsonSerializer.Serialize(dialog));
         }
 
-
-
+        [HttpPost("GetMessages")]
+        public IActionResult GetDialogMessages(int dialogId)
+        {
+            return null;
+        }
 
         //Сохранить сообщение
 

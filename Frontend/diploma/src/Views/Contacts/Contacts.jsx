@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import SendReq from "./../../Network/SendReq";
 import ServerRouter from "./../../Network/ServerRouter";
+import ClientRouter from "./../../Network/ClientRouter";
 
 class Contacts extends Component {
 	state = {
@@ -11,8 +12,8 @@ class Contacts extends Component {
 		this.setState({ user: this.props.user });
 		const { data: contacts } = await SendReq.get(ServerRouter.contacts);
 		this.setState({ contacts });
-		console.log(this.state.user);
-		console.log(this.state.contacts);
+		// console.log(this.state.user);
+		// console.log(this.state.contacts);
 	}
 
 	handleSubmit = async (e, id) => {
@@ -22,11 +23,11 @@ class Contacts extends Component {
 			User2: id,
 		});
 		const { data } = await SendReq.post(ServerRouter.chat, {
-			user1: this.state.user.Id,
-			user2: id,
+			User1: parseInt(this.state.user.id),
+			User2: id,
 		});
-		console.log(data);
-		//this.props.history.push(); //Dialogid);
+		console.log(data.Id);
+		this.props.history.push(`${ClientRouter.chatroom}/id:${data.Id}`);
 	};
 
 	render() {
@@ -38,16 +39,12 @@ class Contacts extends Component {
 						{contacts &&
 							contacts.map((contacts) => {
 								return (
-									<tr key={contacts.SenderId}>
-										<td>{contacts.Sender.FirstName}</td>
-										<td>{contacts.Sender.LastName}</td>
-										<td>{contacts.Sender.Username}</td>
+									<tr key={contacts.Id}>
+										<td>{contacts.FirstName}</td>
+										<td>{contacts.LastName}</td>
+										<td>{contacts.Username}</td>
 										<td>
-											<form
-												onSubmit={(e) =>
-													this.handleSubmit(e, contacts.SenderId)
-												}
-											>
+											<form onSubmit={(e) => this.handleSubmit(e, contacts.Id)}>
 												<button>Dialog</button>
 											</form>
 										</td>
