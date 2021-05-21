@@ -1,14 +1,18 @@
-const express = require("express");
-const socketio = require("socket.io");
-const http = require("http");
+"use strict";
+const app = require("express")();
+const cors = require("cors");
+const http = require("http").createServer(app);
+const io = require("socket.io")(http, {
+	cors: {
+		origin: "http://localhost:3000",
+		credentials: true,
+	},
+});
 
-const app = express();
-const server = http.createServer(app);
-const io = socketio(server);
+app.use(cors());
+app.options("*", cors());
 
 const PORT = process.env.PORT || 5000;
-
-const router = require("./router");
 
 io.on("connection", (socket) => {
 	console.log("New connection");
@@ -18,8 +22,6 @@ io.on("connection", (socket) => {
 	});
 });
 
-app.use(router);
-
-server.listen(PORT, () => {
+http.listen(PORT, () => {
 	console.log(`Server is running on port ${PORT}`);
 });

@@ -8,6 +8,7 @@ const ClientRouter = {
 	requests: "/requests",
 	contacts: "/contacts",
 	chatroom: "/chatroom",
+	chatServer: "localhost:5000",
 };
 
 export default ClientRouter;

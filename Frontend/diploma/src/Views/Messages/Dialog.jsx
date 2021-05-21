@@ -1,4 +1,9 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
+import queryString from "query-string";
+import io from "socket.io-client";
+import ClientRouter from "./../../Network/ClientRouter";
+
+let socket;
 
 class Dialog extends Component {
 	state = {
@@ -7,13 +12,17 @@ class Dialog extends Component {
 	};
 
 	componentDidMount() {
+		//Получение текущего пользователя и ид диалога
 		this.setState({ user: this.props.user });
 		this.setState({ dialogId: this.props.match.params.id });
 		console.log(this.state.dialogId);
-		// const { data: contacts } = await SendReq.get(ServerRouter.contacts);
-		// this.setState({ contacts });
-		// console.log(this.state.contacts);
+		socket = io("http://127.0.0.1:5000");
+		console.log(socket);
+
+		//Получать все сообщения, расфасовывать по отправляющему
 	}
+
+	componentWillUnmount() {}
 
 	render() {
 		return <h3>DIalog {this.state.dialogId}</h3>;
