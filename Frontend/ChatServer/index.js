@@ -15,7 +15,6 @@ app.options("*", cors());
 const PORT = process.env.PORT || 5000;
 
 io.on("connection", (socket) => {
-	console.log("New connection");
 	let _room;
 	let _user;
 	socket.on("join", ({ user, room }) => {
@@ -25,12 +24,15 @@ io.on("connection", (socket) => {
 	});
 
 	socket.on("sendMessage", (message) => {
-		io.to(_room).emit("message", { user: _user, text: message.message });
+		io.to(_room).emit("message", {
+			Id: 0,
+			User: _user,
+			Text: message.message,
+			SendingTime: new Date(),
+		});
 	});
 
-	socket.on("disconnect", () => {
-		console.log("User left");
-	});
+	socket.on("disconnect", () => {});
 });
 
 http.listen(PORT, () => {

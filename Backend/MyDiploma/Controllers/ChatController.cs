@@ -38,11 +38,6 @@ namespace MyDiploma.Controllers
             return Ok(JsonSerializer.Serialize(dialog));
         }
 
-        [HttpPost("GetMessages")]
-        public IActionResult GetDialogMessages(int dialogId)
-        {
-            return null;
-        }
 
         [HttpPost("GetCompanionName")]
         public async Task<IActionResult> GetCompanionNameAsync(GetDialogId _dialogId)
@@ -76,7 +71,7 @@ namespace MyDiploma.Controllers
         [HttpPost("GetMessages")]
         public async Task<IActionResult> GetAllMessagesAsync(GetDialogId dialogId)
         {
-            var messages = await _context.Messages.Where(o => o.ChatRoomId == dialogId.DialogId).ToListAsync();
+            var messages = await _context.Messages.Include(o=>o.User).Where(o => o.ChatRoomId == dialogId.DialogId).ToListAsync();
             return Ok(JsonSerializer.Serialize(messages));
         }
         //Получить все сообщения в диалоге 

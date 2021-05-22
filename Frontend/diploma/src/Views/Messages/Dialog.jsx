@@ -35,11 +35,15 @@ class Dialog extends Component {
 		});
 
 		//Получать все сообщения, расфасовывать по отправляющему
-		const { data } = await SendReq.post(ServerRouter.getMessages, {
+		const { data: messages } = await SendReq.post(ServerRouter.getMessages, {
 			DialogId: parseInt(this.props.match.params.id),
 		});
+		console.log(messages);
+		this.setState({ messages });
+
+		//Сокет для сообщений
 		socket.on("message", (message) => {
-			//Если это не заработает - переместить в рендер
+			console.log(message);
 			const { messages } = this.state;
 			this.setState({ messages: [...messages, message] });
 		});
@@ -61,6 +65,11 @@ class Dialog extends Component {
 		let { message } = this.state;
 		socket.emit("sendMessage", { message });
 
+		await SendReq.post(ServerRouter.saveMessage, {
+			ChatRoomId: parseInt(this.state.dialogId),
+			Text: this.state.message,
+		});
+
 		this.setState({ message: "" });
 	};
 
@@ -75,19 +84,18 @@ class Dialog extends Component {
 					firstName={companion.firstName}
 					lastName={companion.lastName}
 				/>
-				{/* <ScrollToBottom> */}
-				<div>
-					{messages.map(({ user, text }) => (
-						<div key={text}>
+				<ScrollToBottom>
+					{messages.map(({ Id, User, Text, SendingTime }) => (
+						<div key={parseInt(Id) === 0 ? Text : Id}>
 							<Message
-								message={text}
-								senderId={user.id}
+								message={Text}
+								senderId={User.id}
 								currentUserId={_user.id}
+								sendingTime={SendingTime}
 							/>
 						</div>
 					))}
-				</div>
-				{/* </ScrollToBottom> */}
+				</ScrollToBottom>
 				<div>
 					<form onSubmit={(e) => this.handleSubmit(e)}>
 						<Input
