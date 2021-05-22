@@ -16,6 +16,17 @@ const PORT = process.env.PORT || 5000;
 
 io.on("connection", (socket) => {
 	console.log("New connection");
+	let _room;
+	let _user;
+	socket.on("join", ({ user, room }) => {
+		_room = room;
+		_user = user;
+		socket.join(_room);
+	});
+
+	socket.on("sendMessage", (message) => {
+		io.to(_room).emit("message", { user: _user, text: message.message });
+	});
 
 	socket.on("disconnect", () => {
 		console.log("User left");

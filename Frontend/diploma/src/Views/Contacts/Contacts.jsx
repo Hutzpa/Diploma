@@ -12,22 +12,15 @@ class Contacts extends Component {
 		this.setState({ user: this.props.user });
 		const { data: contacts } = await SendReq.get(ServerRouter.contacts);
 		this.setState({ contacts });
-		// console.log(this.state.user);
-		// console.log(this.state.contacts);
 	}
 
 	handleSubmit = async (e, id) => {
 		e.preventDefault();
-		console.log({
-			User1: parseInt(this.state.user.id),
-			User2: id,
-		});
 		const { data } = await SendReq.post(ServerRouter.chat, {
 			User1: parseInt(this.state.user.id),
 			User2: id,
 		});
-		console.log(data.Id);
-		this.props.history.push(`${ClientRouter.chatroom}/id:${data.Id}`);
+		this.props.history.push(`${ClientRouter.chatroom}/${data.Id}`);
 	};
 
 	render() {

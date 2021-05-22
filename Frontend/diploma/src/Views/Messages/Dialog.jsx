@@ -1,31 +1,107 @@
 import React, { Component, useState } from "react";
-import queryString from "query-string";
 import io from "socket.io-client";
-import ClientRouter from "./../../Network/ClientRouter";
+import Input from "./../../Reusable/Input";
+import DialogHeader from "./DialogHeader";
+import SendReq from "./../../Network/SendReq";
+import ServerRouter from "./../../Network/ServerRouter";
+import ScrollToBottom from "react-scroll-to-bottom";
+import Message from "./Message";
 
 let socket;
-
 class Dialog extends Component {
 	state = {
 		messages: [],
+		message: "",
 		dialogId: 0,
+		companion: { firstName: "", lastName: "" },
 	};
 
-	componentDidMount() {
+	async componentDidMount() {
 		//Получение текущего пользователя и ид диалога
 		this.setState({ user: this.props.user });
 		this.setState({ dialogId: this.props.match.params.id });
-		console.log(this.state.dialogId);
-		socket = io("http://127.0.0.1:5000");
-		console.log(socket);
+
+		//Получение имени и фамилии пользователя напротив
+		const { data } = await SendReq.post(ServerRouter.getCompanionName, {
+			DialogId: parseInt(this.props.match.params.id),
+		});
+		this.setState({ companion: data });
+
+		//Подключение сокета
+		socket = io("localhost:5000");
+		socket.emit("join", {
+			room: this.props.match.params.id,
+			user: this.props.user,
+		});
 
 		//Получать все сообщения, расфасовывать по отправляющему
+		const { data } = await SendReq.post(ServerRouter.getMessages, {
+			DialogId: parseInt(this.props.match.params.id),
+		});
+		socket.on("message", (message) => {
+			//Если это не заработает - переместить в рендер
+			const { messages } = this.state;
+			this.setState({ messages: [...messages, message] });
+		});
 	}
 
-	componentWillUnmount() {}
+	componentWillUnmount() {
+		socket.disconnect();
+		socket.off();
+	}
+
+	handleChange = async ({ currentTarget: input }) => {
+		let message = { ...this.state.message };
+		message = input.value;
+		this.setState({ message });
+	};
+
+	handleSubmit = async (e) => {
+		e.preventDefault();
+		let { message } = this.state;
+		socket.emit("sendMessage", { message });
+
+		this.setState({ message: "" });
+	};
 
 	render() {
-		return <h3>DIalog {this.state.dialogId}</h3>;
+		const { message } = this.state;
+		const { companion } = this.state;
+		const { messages } = this.state;
+		const { user: _user } = this.state;
+		return (
+			<div>
+				<DialogHeader
+					firstName={companion.firstName}
+					lastName={companion.lastName}
+				/>
+				{/* <ScrollToBottom> */}
+				<div>
+					{messages.map(({ user, text }) => (
+						<div key={text}>
+							<Message
+								message={text}
+								senderId={user.id}
+								currentUserId={_user.id}
+							/>
+						</div>
+					))}
+				</div>
+				{/* </ScrollToBottom> */}
+				<div>
+					<form onSubmit={(e) => this.handleSubmit(e)}>
+						<Input
+							name="message"
+							value={message}
+							onChange={this.handleChange}
+							inputType="text"
+							placeholder="Your message"
+							maxLength={2000}
+						/>
+					</form>
+				</div>
+			</div>
+		);
 	}
 }
 

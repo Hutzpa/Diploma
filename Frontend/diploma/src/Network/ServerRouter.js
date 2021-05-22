@@ -10,6 +10,8 @@ const ServerRouter = {
 	replyOnRequest: serverUrl + "request/decide",
 	contacts: serverUrl + "contacts",
 	chat: serverUrl + "chat/getDialog",
+	getCompanionName: serverUrl + "chat/GetCompanionName",
+	saveMessage: serverUrl + "chat/SaveMessage",
 	getMessages: serverUrl + "chat/GetMessages",
 };
 
