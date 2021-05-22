@@ -1,18 +1,18 @@
 import React, { Component } from "react";
+import ReactEmoji from "react-emoji";
 
 const Message = ({ message, senderId, currentUserId, sendingTime }) => {
-	console.log(`Passed message is ${message}`);
 	let isSentByCurUser = senderId === currentUserId;
 	return isSentByCurUser ? (
 		<div>
 			{/* //Слева */}
-			<p>{message}</p>
+			<p>{ReactEmoji.emojify(message)}</p>
 			<p>{sendingTime}</p>
 		</div>
 	) : (
 		<div>
 			{/* //Справа */}
-			<p>{message}</p>
+			<p>{ReactEmoji.emojify(message)}</p>
 			<p>{sendingTime}</p>
 		</div>
 	);

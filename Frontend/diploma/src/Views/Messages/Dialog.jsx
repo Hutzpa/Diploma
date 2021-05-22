@@ -38,12 +38,10 @@ class Dialog extends Component {
 		const { data: messages } = await SendReq.post(ServerRouter.getMessages, {
 			DialogId: parseInt(this.props.match.params.id),
 		});
-		console.log(messages);
 		this.setState({ messages });
 
 		//Сокет для сообщений
 		socket.on("message", (message) => {
-			console.log(message);
 			const { messages } = this.state;
 			this.setState({ messages: [...messages, message] });
 		});
