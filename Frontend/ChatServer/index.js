@@ -15,6 +15,7 @@ app.options("*", cors());
 const PORT = process.env.PORT || 5000;
 
 io.on("connection", (socket) => {
+	//Чатик
 	let _room;
 	let _user;
 	socket.on("join", ({ user, room }) => {
@@ -31,8 +32,24 @@ io.on("connection", (socket) => {
 			SendingTime: new Date(),
 		});
 	});
+	socket.on("disconnect", () => {
+		//socket.broad
+	});
 
-	socket.on("disconnect", () => {});
+	//Видеозвонки
+	socket.emit("me", socket.id);
+
+	socket.on("callUser", (data) => {
+		io.to(data.userToCall).emit("callUser", {
+			signal: data.signalData,
+			from: data.from,
+			name: data.name,
+		});
+	});
+
+	socket.on("answerCall", (data) =>
+		io.to(data.to).emit("callAccepted", data.signal)
+	);
 });
 
 http.listen(PORT, () => {

@@ -16,6 +16,7 @@ import Search from "./Views/Contacts/Search";
 import ContactRequests from "./Views/Contacts/ContactRequests";
 import Contacts from "./Views/Contacts/Contacts";
 import Dialog from "./Views/Messages/Dialog";
+import VideoDialog from "./Views/Messages/VideoDialog";
 
 class App extends Component {
 	state = {};
@@ -44,6 +45,7 @@ class App extends Component {
 						)}
 						{user && ( //если пользователь залогинен, эти руты доступны
 							<React.Fragment>
+								<Route path="/VideoDialog" component={VideoDialog} />
 								<Route path={ClientRouter.logout} component={Logout} />
 								<Route path={ClientRouter.home} component={Home} />
 								<Route
@@ -73,6 +75,7 @@ class App extends Component {
 									path={ClientRouter.contacts}
 									render={(props) => <Contacts user={user} {...props} />}
 								/>
+
 								<Redirect to={ClientRouter.home} />
 							</React.Fragment>
 						)}

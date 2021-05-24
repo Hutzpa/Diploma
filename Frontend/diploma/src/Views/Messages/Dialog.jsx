@@ -6,6 +6,7 @@ import SendReq from "./../../Network/SendReq";
 import ServerRouter from "./../../Network/ServerRouter";
 import ScrollToBottom from "react-scroll-to-bottom";
 import Message from "./Message";
+import ReactEmoji from "react-emoji";
 
 let socket;
 class Dialog extends Component {

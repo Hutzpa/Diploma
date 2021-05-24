@@ -22,6 +22,7 @@ const Navbar = ({ user }) => {
 						<Link to={ClientRouter.search}>Search</Link>
 						<Link to={ClientRouter.requests}>Requests</Link>
 						<Link to={ClientRouter.contacts}>Contacts</Link>
+						<Link to="/VideoDialog">Video</Link>
 						<Link to={ClientRouter.profile}>Welcome {user.firstName}</Link>
 						<Link to={ClientRouter.logout}>Logout</Link>
 					</React.Fragment>
