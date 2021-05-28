@@ -32,8 +32,12 @@ const VideoDialog = () => {
 				myVideo.current.srcObject = stream;
 			});
 
+		console.log("Here");
+		socket.emit("getSocketId");
+
 		socket.on("me", (id) => {
 			setMe(id);
+			console.log(`Socket id is ${id}`);
 		});
 
 		console.log(me);
@@ -43,7 +47,8 @@ const VideoDialog = () => {
 			setName(data.name);
 			setCallerSignal(data.signal);
 		});
-	}, [myVideo.current]);
+	}, []);
+	//}, [myVideo.current]);
 
 	const callUser = (id) => {
 		const peer = new Peer({
@@ -87,10 +92,8 @@ const VideoDialog = () => {
 			userVideo.current.srcObject = stream;
 		});
 
-		socket.on("callAccepted", (signal) => {
-			setCallAccepted(true);
-			peer.signal(signal);
-		});
+		peer.signal(callerSignal);
+
 		connectionRef.current = peer;
 	};
 

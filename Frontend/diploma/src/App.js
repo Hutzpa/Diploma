@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Route, Switch, Redirect } from "react-router";
+//import { Route, Switch, Redirect } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 
 import ClientRouter from "./Network/ClientRouter";
@@ -32,56 +33,44 @@ class App extends Component {
 	render() {
 		const { user } = this.state;
 		return (
-			<React.Fragment>
+			<div>
+				<Navbar user={this.state.user} />
 				<div className="content">
-					<Navbar user={this.state.user} />
 					<Switch>
-						{!user && ( //если пользователь НЕ залогинен, эти руты доступны
-							<React.Fragment>
-								<Route path={ClientRouter.login} component={Login} />
-								<Route path={ClientRouter.register} component={Register} />
-								<Redirect to={ClientRouter.login} />
-							</React.Fragment>
-						)}
-						{user && ( //если пользователь залогинен, эти руты доступны
-							<React.Fragment>
-								<Route path="/VideoDialog" component={VideoDialog} />
-								<Route path={ClientRouter.logout} component={Logout} />
-								<Route path={ClientRouter.home} component={Home} />
-								<Route
-									path={ClientRouter.search}
-									render={(props) => <Search user={user} {...props} />}
-								/>
-
-								<Route
-									path={ClientRouter.chatroom + "/:id"}
-									render={(props) => <Dialog user={user} {...props} />}
-								/>
-
-								<Route
-									path={ClientRouter.profile + "/:id"}
-									render={(props) => <Profile user={user} {...props} />}
-								/>
-								<Route
-									exact
-									path={ClientRouter.profile}
-									render={(props) => <Profile user={user} {...props} />}
-								/>
-								<Route
-									path={ClientRouter.requests}
-									render={(props) => <ContactRequests user={user} {...props} />}
-								/>
-								<Route
-									path={ClientRouter.contacts}
-									render={(props) => <Contacts user={user} {...props} />}
-								/>
-
-								<Redirect to={ClientRouter.home} />
-							</React.Fragment>
-						)}
+						<Route exact path={ClientRouter.home} component={Home} />
+						<Route
+							path={ClientRouter.chatroom + "/:id"}
+							render={(props) => <Dialog user={user} {...props} />}
+						/>
+						<Route
+							path={ClientRouter.profile + "/:id"}
+							render={(props) => <Profile user={user} {...props} />}
+						/>
+						<Route path={ClientRouter.logout} component={Logout} />
+						<Route path="/VideoDialog" component={VideoDialog} />
+						<Route
+							path={ClientRouter.search}
+							render={(props) => <Search user={user} {...props} />}
+						/>
+						<Route
+							path={ClientRouter.profile}
+							render={(props) => <Profile user={user} {...props} />}
+						/>
+						<Route
+							path={ClientRouter.requests}
+							render={(props) => <ContactRequests user={user} {...props} />}
+						/>
+						<Route
+							path={ClientRouter.contacts}
+							render={(props) => <Contacts user={user} {...props} />}
+						/>
+						<Redirect to={ClientRouter.home} />
+						<Route path={ClientRouter.login} component={Login} />
+						<Route path={ClientRouter.register} component={Register} />
+						<Redirect to={ClientRouter.login} />
 					</Switch>
 				</div>
-			</React.Fragment>
+			</div>
 		);
 	}
 }
