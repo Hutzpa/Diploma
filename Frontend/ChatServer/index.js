@@ -34,7 +34,7 @@ io.on("connection", (socket) => {
 		});
 	});
 	socket.on("disconnect", () => {
-		//socket.broad
+		console.log(`${socket.id} has left!!!!`);
 	});
 
 	//Видеозвонки

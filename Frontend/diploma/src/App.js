@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Route, Switch, Redirect } from "react-router";
-//import { Route, Switch, Redirect } from "react-router-dom";
 import jwtDecode from "jwt-decode";
+import io from "socket.io-client";
 
 import ClientRouter from "./Network/ClientRouter";
 
@@ -19,6 +19,7 @@ import Contacts from "./Views/Contacts/Contacts";
 import Dialog from "./Views/Messages/Dialog";
 import VideoDialog from "./Views/Messages/VideoDialog";
 
+const socket = io("localhost:5000");
 class App extends Component {
 	state = {};
 
@@ -32,6 +33,7 @@ class App extends Component {
 
 	render() {
 		const { user } = this.state;
+
 		return (
 			<div>
 				<Navbar user={this.state.user} />
@@ -46,8 +48,13 @@ class App extends Component {
 							path={ClientRouter.profile + "/:id"}
 							render={(props) => <Profile user={user} {...props} />}
 						/>
+						<Route path={ClientRouter.login} component={Login} />
+						<Route path={ClientRouter.register} component={Register} />
 						<Route path={ClientRouter.logout} component={Logout} />
-						<Route path="/VideoDialog" component={VideoDialog} />
+						<Route
+							path="/VideoDialog"
+							render={(props) => <VideoDialog _socket={socket} {...props} />}
+						/>
 						<Route
 							path={ClientRouter.search}
 							render={(props) => <Search user={user} {...props} />}
@@ -65,13 +72,15 @@ class App extends Component {
 							render={(props) => <Contacts user={user} {...props} />}
 						/>
 						<Redirect to={ClientRouter.home} />
-						<Route path={ClientRouter.login} component={Login} />
-						<Route path={ClientRouter.register} component={Register} />
-						<Redirect to={ClientRouter.login} />
 					</Switch>
 				</div>
 			</div>
 		);
+	}
+
+	componentWillUnmount() {
+		socket.disconnect();
+		socket.off();
 	}
 }
 

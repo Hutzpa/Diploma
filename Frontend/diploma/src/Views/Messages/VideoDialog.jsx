@@ -6,12 +6,10 @@ import PhoneIcon from "@material-ui/icons/Phone";
 import React, { useEffect, useRef, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import Peer from "simple-peer";
-import io from "socket.io-client";
 
-const socket = io("localhost:5000");
-
-const VideoDialog = () => {
+const VideoDialog = ({ _socket }) => {
 	const [me, setMe] = useState("");
+	const [socket, setSocket] = useState(_socket);
 	const [stream, setStream] = useState();
 	const [receivingCall, setReceivingCall] = useState(false);
 	const [caller, setCaller] = useState("");
@@ -32,15 +30,11 @@ const VideoDialog = () => {
 				myVideo.current.srcObject = stream;
 			});
 
-		console.log("Here");
 		socket.emit("getSocketId");
-
 		socket.on("me", (id) => {
 			setMe(id);
-			console.log(`Socket id is ${id}`);
 		});
 
-		console.log(me);
 		socket.on("callUser", (data) => {
 			setReceivingCall(true);
 			setCaller(data.from);
@@ -48,7 +42,6 @@ const VideoDialog = () => {
 			setCallerSignal(data.signal);
 		});
 	}, []);
-	//}, [myVideo.current]);
 
 	const callUser = (id) => {
 		const peer = new Peer({
