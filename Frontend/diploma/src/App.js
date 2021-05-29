@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useEffect, useRef, useState } from "react";
 import { Route, Switch, Redirect } from "react-router";
 import jwtDecode from "jwt-decode";
 import io from "socket.io-client";
@@ -23,6 +23,10 @@ const socket = io("localhost:5000");
 class App extends Component {
 	state = {};
 
+	constructor(props) {
+		super(props);
+	}
+
 	componentDidMount() {
 		try {
 			var jwt = localStorage.getItem("JWT");
@@ -42,7 +46,9 @@ class App extends Component {
 						<Route exact path={ClientRouter.home} component={Home} />
 						<Route
 							path={ClientRouter.chatroom + "/:id"}
-							render={(props) => <Dialog user={user} {...props} />}
+							render={(props) => (
+								<Dialog socket={socket} user={user} {...props} />
+							)}
 						/>
 						<Route
 							path={ClientRouter.profile + "/:id"}
@@ -51,10 +57,7 @@ class App extends Component {
 						<Route path={ClientRouter.login} component={Login} />
 						<Route path={ClientRouter.register} component={Register} />
 						<Route path={ClientRouter.logout} component={Logout} />
-						<Route
-							path="/VideoDialog"
-							render={(props) => <VideoDialog _socket={socket} {...props} />}
-						/>
+
 						<Route
 							path={ClientRouter.search}
 							render={(props) => <Search user={user} {...props} />}

@@ -6,30 +6,26 @@ import SendReq from "./../../Network/SendReq";
 import ServerRouter from "./../../Network/ServerRouter";
 import ScrollToBottom from "react-scroll-to-bottom";
 import Message from "./Message";
-import ReactEmoji from "react-emoji";
 
-let socket;
 class Dialog extends Component {
 	state = {
 		messages: [],
 		message: "",
-		dialogId: 0,
+		dialogId: this.props.match.params.id,
 		companion: { firstName: "", lastName: "" },
+		socket: this.props.socket,
+		user: this.props.user,
 	};
 
 	async componentDidMount() {
-		//Получение текущего пользователя и ид диалога
-		this.setState({ user: this.props.user });
-		this.setState({ dialogId: this.props.match.params.id });
-
 		//Получение имени и фамилии пользователя напротив
 		const { data } = await SendReq.post(ServerRouter.getCompanionName, {
 			DialogId: parseInt(this.props.match.params.id),
 		});
 		this.setState({ companion: data });
 
-		//Подключение сокета
-		socket = io("localhost:5000");
+		const { socket } = this.state;
+
 		socket.emit("join", {
 			room: this.props.match.params.id,
 			user: this.props.user,
@@ -48,11 +44,6 @@ class Dialog extends Component {
 		});
 	}
 
-	componentWillUnmount() {
-		socket.disconnect();
-		socket.off();
-	}
-
 	handleChange = async ({ currentTarget: input }) => {
 		let message = { ...this.state.message };
 		message = input.value;
@@ -61,6 +52,7 @@ class Dialog extends Component {
 
 	handleSubmit = async (e) => {
 		e.preventDefault();
+		const { socket } = this.state;
 		let { message } = this.state;
 		socket.emit("sendMessage", { message });
 
@@ -73,15 +65,20 @@ class Dialog extends Component {
 	};
 
 	render() {
-		const { message } = this.state;
-		const { companion } = this.state;
 		const { messages } = this.state;
 		const { user: _user } = this.state;
+		const { message } = this.state;
+		const { companion } = this.state;
+		const { socket } = this.state;
+
 		return (
 			<div>
 				<DialogHeader
 					firstName={companion.firstName}
 					lastName={companion.lastName}
+					socket={socket}
+					nickname={this.state.user.firstName + " " + this.state.user.lastName}
+					//nickname={`gre`}
 				/>
 				<ScrollToBottom>
 					{messages.map(({ Id, User, Text, SendingTime }) => (

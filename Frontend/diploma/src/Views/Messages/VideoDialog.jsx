@@ -7,10 +7,10 @@ import React, { useEffect, useRef, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import Peer from "simple-peer";
 
-const VideoDialog = ({ _socket }) => {
+const VideoDialog = ({ _socket, nickname }) => {
 	const [me, setMe] = useState("");
 	const [socket, setSocket] = useState(_socket);
-	const [stream, setStream] = useState();
+	const [stream, setStream] = useState(); //
 	const [receivingCall, setReceivingCall] = useState(false);
 	const [caller, setCaller] = useState("");
 	const [callerSignal, setCallerSignal] = useState();
@@ -18,7 +18,7 @@ const VideoDialog = ({ _socket }) => {
 	const [idToCall, setIdToCall] = useState("");
 	const [callEnded, setCallEnded] = useState(false);
 	const [name, setName] = useState("");
-	const myVideo = useRef();
+	const myVideo = useRef(); //
 	const userVideo = useRef();
 	const connectionRef = useRef();
 
@@ -55,7 +55,7 @@ const VideoDialog = ({ _socket }) => {
 				userToCall: id,
 				signalData: data,
 				from: me,
-				name: name,
+				name: nickname,
 			});
 		});
 
@@ -92,7 +92,7 @@ const VideoDialog = ({ _socket }) => {
 
 	const leaveCall = () => {
 		setCallEnded(true);
-		connectionRef.current.destroy();
+		//connectionRef.current.destroy();
 	};
 
 	return (
@@ -123,14 +123,14 @@ const VideoDialog = ({ _socket }) => {
 					</div>
 				</div>
 				<div className="myId">
-					<TextField
+					{/* <TextField
 						id="filled-basic"
 						label="Name"
 						variant="filled"
 						value={name}
 						onChange={(e) => setName(e.target.value)}
 						style={{ marginBottom: "20px" }}
-					/>
+					/> */}
 					<CopyToClipboard text={me} style={{ marginBottom: "2rem" }}>
 						<Button
 							variant="contained"
@@ -157,7 +157,10 @@ const VideoDialog = ({ _socket }) => {
 							<IconButton
 								color="primary"
 								aria-label="call"
-								onClick={() => callUser(idToCall)}
+								onClick={() => {
+									callUser(idToCall);
+									setName(nickname);
+								}}
 							>
 								<PhoneIcon fontSize="large" />
 							</IconButton>
