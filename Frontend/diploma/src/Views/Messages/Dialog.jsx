@@ -12,7 +12,7 @@ class Dialog extends Component {
 		messages: [],
 		message: "",
 		dialogId: this.props.match.params.id,
-		companion: { firstName: "", lastName: "" },
+		companion: { firstName: "", lastName: "", id: 0 },
 		socket: this.props.socket,
 		user: this.props.user,
 	};
@@ -78,7 +78,7 @@ class Dialog extends Component {
 					lastName={companion.lastName}
 					socket={socket}
 					nickname={this.state.user.firstName + " " + this.state.user.lastName}
-					//nickname={`gre`}
+					id={_user.id}
 				/>
 				<ScrollToBottom>
 					{messages.map(({ Id, User, Text, SendingTime }) => (

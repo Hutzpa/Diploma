@@ -51,7 +51,7 @@ namespace MyDiploma.Controllers
                 .GetAwaiter().GetResult().Participants;
             companions.Remove(await _context.Participants.FirstOrDefaultAsync(o => o.ChatRoomId == dialogId && o.UserId == currentUser.Id));
             var result = companions.First().User;
-            return Ok(new {firstName = result.FirstName, lastName = result.LastName });
+            return Ok(new {firstName = result.FirstName, lastName = result.LastName,id=result.Id });
         }
 
         [HttpPost("SaveMessage")]

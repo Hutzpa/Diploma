@@ -15,7 +15,13 @@ app.options("*", cors());
 const PORT = process.env.PORT || 5000;
 
 io.on("connection", (socket) => {
-	console.log("New connection " + socket.id);
+	let _userId;
+	socket.on("getUserData", ({ id }) => {
+		_userId = id;
+		socket.join(_userId);
+		console.log("User is waiting");
+	});
+
 	//Чатик
 	let _room;
 	let _user;
@@ -38,9 +44,9 @@ io.on("connection", (socket) => {
 	});
 
 	//Видеозвонки
-	socket.on("getSocketId", () => {
-		socket.emit("me", socket.id);
-	});
+	// socket.on("getSocketId", () => {
+	// 	socket.emit("me", socket.id);
+	// });
 
 	socket.on("callUser", (data) => {
 		io.to(data.userToCall).emit("callUser", {

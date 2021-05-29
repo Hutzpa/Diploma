@@ -7,7 +7,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import Peer from "simple-peer";
 
-const VideoDialog = ({ _socket, nickname }) => {
+const VideoDialog = ({ _socket, nickname, id_my, id_companion }) => {
 	const [me, setMe] = useState("");
 	const [socket, setSocket] = useState(_socket);
 	const [stream, setStream] = useState(); //
@@ -30,10 +30,9 @@ const VideoDialog = ({ _socket, nickname }) => {
 				myVideo.current.srcObject = stream;
 			});
 
-		socket.emit("getSocketId");
-		socket.on("me", (id) => {
-			setMe(id);
-		});
+		// socket.emit("getSocketId");
+		// socket.on("me", (id) => {});
+		setMe(id_my);
 
 		socket.on("callUser", (data) => {
 			setReceivingCall(true);
@@ -52,7 +51,7 @@ const VideoDialog = ({ _socket, nickname }) => {
 
 		peer.on("signal", (data) => {
 			socket.emit("callUser", {
-				userToCall: id,
+				userToCall: id_companion,
 				signalData: data,
 				from: me,
 				name: nickname,
@@ -123,14 +122,6 @@ const VideoDialog = ({ _socket, nickname }) => {
 					</div>
 				</div>
 				<div className="myId">
-					{/* <TextField
-						id="filled-basic"
-						label="Name"
-						variant="filled"
-						value={name}
-						onChange={(e) => setName(e.target.value)}
-						style={{ marginBottom: "20px" }}
-					/> */}
 					<CopyToClipboard text={me} style={{ marginBottom: "2rem" }}>
 						<Button
 							variant="contained"
@@ -141,13 +132,13 @@ const VideoDialog = ({ _socket, nickname }) => {
 						</Button>
 					</CopyToClipboard>
 
-					<TextField
+					{/* <TextField
 						id="filled-basic"
 						label="ID to call"
 						variant="filled"
 						value={idToCall}
 						onChange={(e) => setIdToCall(e.target.value)}
-					/>
+					/> */}
 					<div className="call-button">
 						{callAccepted && !callEnded ? (
 							<Button variant="contained" color="secondary" onClick={leaveCall}>

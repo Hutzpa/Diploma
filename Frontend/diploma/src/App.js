@@ -21,18 +21,20 @@ import VideoDialog from "./Views/Messages/VideoDialog";
 
 const socket = io("localhost:5000");
 class App extends Component {
-	state = {};
+	state = {
+		user: localStorage.getItem("JWT")
+			? jwtDecode(localStorage.getItem("JWT"))
+			: "",
+	};
 
 	constructor(props) {
 		super(props);
 	}
 
 	componentDidMount() {
-		try {
-			var jwt = localStorage.getItem("JWT");
-			const user = jwtDecode(jwt);
-			this.setState({ user });
-		} catch (error) {}
+		if (this.state.user) {
+			socket.emit("getUserData", this.state.user.id);
+		}
 	}
 
 	render() {
