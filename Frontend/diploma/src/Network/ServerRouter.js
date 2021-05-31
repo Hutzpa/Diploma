@@ -13,6 +13,7 @@ const ServerRouter = {
 	getCompanionName: serverUrl + "chat/GetCompanionName",
 	saveMessage: serverUrl + "chat/SaveMessage",
 	getMessages: serverUrl + "chat/GetMessages",
+	setProfilePicture: serverUrl + "profile/setProfilePicture",
 };
 
 export default ServerRouter;

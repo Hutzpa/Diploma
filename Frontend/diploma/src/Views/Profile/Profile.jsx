@@ -6,6 +6,8 @@ class Profile extends Component {
 	state = {
 		currentUser: {},
 		askedUser: {},
+		photo: {},
+		photoName: "",
 	};
 
 	async componentDidMount() {
@@ -43,11 +45,49 @@ class Profile extends Component {
 		}
 	};
 
+	addProfilePhoto = async (e) => {
+		e.preventDefault();
+		const { photo } = this.state;
+		const { photoName } = this.state;
+		const formData = new FormData();
+		formData.append("formFile", photo);
+		formData.append("fileName", photoName);
+		let response = await SendReq.post(ServerRouter.setProfilePicture, formData);
+	};
+	handleFileSelect = (e) => {
+		this.setState({ photo: e.target.files[0] });
+		this.setState({ photoName: e.target.files[0].name });
+	};
+
 	render() {
 		const { currentUser } = this.state;
 		const { askedUser } = this.state;
 		return (
 			<div>
+				<h4>Установка фото</h4>
+				<form
+					onSubmit={this.addProfilePhoto}
+					enctype="multipart/form-data"
+					method="post"
+				>
+					<input
+						className="form-control-file"
+						type="file"
+						accept="image/*"
+						name="photo"
+						//value={this.state.photo}
+						id="photo"
+						onChange={this.handleFileSelect}
+						required
+					/>
+
+					<input
+						className="btn btn-outline-success form-control"
+						type="submit"
+						value="grgergre"
+					/>
+				</form>
+				<h4>Отпрвка запросов пользователю</h4>
 				{Object.keys(askedUser).length !== 0 && (
 					<div>
 						{askedUser.id == currentUser.id ? (

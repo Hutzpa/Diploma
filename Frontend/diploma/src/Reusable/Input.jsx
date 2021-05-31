@@ -11,17 +11,23 @@ const Input = ({
 	required,
 	maxLength,
 	onSubmit,
+	classNameInput,
+	classNameLabel,
 }) => {
 	return (
 		<div className="form-group">
-			{label && <label htmlFor={name}>{label}</label>}
+			{label && (
+				<label className={classNameLabel ? classNameLabel : ""} htmlFor={name}>
+					{label}
+				</label>
+			)}
 			<input
 				value={value}
 				name={name}
 				onChange={onChange}
 				id={name}
 				type={inputType ? inputType : "text"}
-				className="form-control"
+				className={classNameInput ? classNameInput : "form-control"}
 				required={required}
 				placeholder={placeholder ? placeholder : ""}
 				maxLength={maxLength ? maxLength : ""}

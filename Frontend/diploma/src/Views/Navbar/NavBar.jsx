@@ -4,29 +4,72 @@ import ClientRouter from "./../../Network/ClientRouter";
 
 const Navbar = ({ user }) => {
 	return (
-		<nav>
-			<div className="navbar-nav">
-				<label>Navbar</label>
+		<nav className="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+			<div className="container">
+				<Link className="navbar-brand" to={ClientRouter.contacts}>
+					Holoserv
+				</Link>
+				<div className="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+					<ul className="navbar-nav flex-grow-1">
+						{!user && (
+							<React.Fragment>
+								<li className="nav-item">
+									<Link className="nav-link text-dark" to={ClientRouter.login}>
+										{" "}
+										Login
+									</Link>
+								</li>
+								<li>
+									<Link
+										className="nav-link text-dark"
+										to={ClientRouter.register}
+									>
+										Register{" "}
+									</Link>
+								</li>
+							</React.Fragment>
+						)}
+						{user && (
+							<React.Fragment>
+								<li className="nav-item">
+									<Link className="nav-link text-dark" to={ClientRouter.search}>
+										Search
+									</Link>
+								</li>
+								<li className="nav-item">
+									<Link
+										className="nav-link text-dark"
+										to={ClientRouter.requests}
+									>
+										Requests
+									</Link>
+								</li>
+								<li className="nav-item">
+									<Link
+										className="nav-link text-dark"
+										to={ClientRouter.contacts}
+									>
+										Contacts
+									</Link>
+								</li>
+								<li className="nav-item">
+									<Link
+										className="nav-link text-info"
+										to={ClientRouter.profile}
+									>
+										Welcome {user.firstName}
+									</Link>
+								</li>
 
-				{!user && (
-					<React.Fragment>
-						<Link to={ClientRouter.login}> Login</Link>
-						<Link to={ClientRouter.register}>Register </Link>
-					</React.Fragment>
-				)}
-				{user && (
-					<React.Fragment>
-						<Link className="nav-item nav-link" to={ClientRouter.home}>
-							Home
-						</Link>
-						<Link to={ClientRouter.search}>Search</Link>
-						<Link to={ClientRouter.requests}>Requests</Link>
-						<Link to={ClientRouter.contacts}>Contacts</Link>
-						<Link to="/VideoDialog">Video</Link>
-						<Link to={ClientRouter.profile}>Welcome {user.firstName}</Link>
-						<Link to={ClientRouter.logout}>Logout</Link>
-					</React.Fragment>
-				)}
+								<li className="nav-item">
+									<Link className="nav-link text-dark" to={ClientRouter.logout}>
+										Logout
+									</Link>
+								</li>
+							</React.Fragment>
+						)}
+					</ul>
+				</div>
 			</div>
 		</nav>
 	);

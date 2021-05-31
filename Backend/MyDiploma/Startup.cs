@@ -37,6 +37,7 @@ namespace MyDiploma
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IHashService, HashService>();
+            services.AddScoped<IFileManager, FileManager>();
 
             //services.AddScoped<AppContext>();
         }

@@ -45,7 +45,7 @@ class App extends Component {
 				<Navbar user={this.state.user} />
 				<div className="content">
 					<Switch>
-						<Route exact path={ClientRouter.home} component={Home} />
+						{/* <Route exact path={ClientRouter.home} component={Home} /> */}
 						<Route
 							path={ClientRouter.chatroom + "/:id"}
 							render={(props) => (
@@ -76,7 +76,12 @@ class App extends Component {
 							path={ClientRouter.contacts}
 							render={(props) => <Contacts user={user} {...props} />}
 						/>
-						<Redirect to={ClientRouter.home} />
+						{/* <Redirect to={ClientRouter.home} /> */}
+						{user ? (
+							<Redirect to={ClientRouter.contacts} />
+						) : (
+							<Redirect to={ClientRouter.login} />
+						)}
 					</Switch>
 				</div>
 			</div>

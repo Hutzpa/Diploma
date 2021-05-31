@@ -9,6 +9,7 @@ namespace MyDiploma.Entities
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Username { get; set; }
+        public string Photo { get; set; }
 
         [JsonIgnore]
         public string PasswordHash { get; set; }

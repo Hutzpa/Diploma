@@ -56,32 +56,48 @@ class Login extends Component {
 		const { account } = this.state;
 		const { errors } = this.state;
 		return (
-			<div>
-				<h1>Login</h1>
-
-				<form onSubmit={this.handleSubmit}>
-					<Input
-						name="username"
-						value={account.username}
-						onChange={this.handleChange}
-						label="Username"
-						inputType="email"
-						placeholder="Your email"
-						error={errors.username}
-						required={true}
-					/>
-					<Input
-						name="password"
-						value={account.password}
-						onChange={this.handleChange}
-						label="Password"
-						inputType="password"
-						error={errors.password}
-						required={true}
-					/>
-					<button className="btn btn-primary">Log in</button>
-				</form>
-			</div>
+			<form onSubmit={this.handleSubmit}>
+				<table align="center">
+					<h4 className="lead">Authentication</h4>
+					<tr>
+						<td>
+							<Input
+								classNameInput="mb-2 mt-2 form-control"
+								classNameLabel="mb-2 mt-2 lead"
+								name="username"
+								value={account.username}
+								onChange={this.handleChange}
+								label="Username"
+								inputType="email"
+								placeholder="Your email"
+								error={errors.username}
+								required={true}
+							/>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<Input
+								classNameInput="mb-2 mt-2 form-control"
+								classNameLabel="mb-2 mt-2 lead"
+								name="password"
+								value={account.password}
+								onChange={this.handleChange}
+								label="Password"
+								inputType="password"
+								placeholder="Your password"
+								error={errors.password}
+								required={true}
+							/>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<button className="btn btn-success mb-2 mt-2">Log in</button>
+						</td>
+					</tr>
+				</table>
+			</form>
 		);
 	}
 }
