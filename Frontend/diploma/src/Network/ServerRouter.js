@@ -14,6 +14,7 @@ const ServerRouter = {
 	saveMessage: serverUrl + "chat/SaveMessage",
 	getMessages: serverUrl + "chat/GetMessages",
 	setProfilePicture: serverUrl + "profile/setProfilePicture",
+	avatar: serverUrl + "/content/photos/",
 };
 
 export default ServerRouter;

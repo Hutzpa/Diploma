@@ -5,6 +5,8 @@ using MyDiploma.Entities;
 using MyDiploma.Models.Contacts;
 using MyDiploma.Models.Request;
 using MyDiploma.Models.Search;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -17,7 +19,7 @@ namespace MyDiploma.Controllers
     public class RequestController : ControllerBase
     {
         private DiplomaContext _context;
-       // private User _User;
+        // private User _User;
 
         public RequestController(DiplomaContext context)
         {
@@ -29,7 +31,7 @@ namespace MyDiploma.Controllers
         public async Task<IActionResult> GetRequests()
         {
             Entities.User currentUser = (Entities.User)HttpContext.Items["User"];
-            return Ok(JsonSerializer.Serialize(await _context.Contacts.Include(o => o.Sender).Include(o=>o.Receiver).Where(o => o.ReceiverId == currentUser.Id && o.IsApproved == false).ToListAsync()));
+            return Ok(JsonSerializer.Serialize(await _context.Contacts.Include(o => o.Sender).Include(o => o.Receiver).Where(o => o.ReceiverId == currentUser.Id && o.IsApproved == false).ToListAsync()));
         }
 
         [HttpPost("decide")]
@@ -69,8 +71,12 @@ namespace MyDiploma.Controllers
         public async Task<IActionResult> SearchAsync(SearchRequest request)
         {
             Entities.User currentUser = (Entities.User)HttpContext.Items["User"];
-            var data = await _context.Users.Where(o => o.FirstName.Contains(request.Query) || o.LastName.Contains(request.Query) || o.Username.Contains(request.Query)).ToListAsync();
-            data.Remove(currentUser);
+            List<User> data = new List<User>();
+            if (!String.IsNullOrEmpty(request.Query) && !String.IsNullOrWhiteSpace(request.Query))
+            {
+                data = await _context.Users.Where(o => o.FirstName.Trim().ToLower().Contains(request.Query.ToLower()) || o.LastName.Trim().ToLower().Contains(request.Query.ToLower())).ToListAsync();
+                data.Remove(currentUser);
+            }
             return Ok(JsonSerializer.Serialize(data));
         }
 

@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import SendReq from "./../../Network/SendReq";
 import ServerRouter from "./../../Network/ServerRouter";
 import ClientRouter from "./../../Network/ClientRouter";
+import Picture from "./../../Reusable/Image";
+import { Link } from "react-router-dom";
 
 class Contacts extends Component {
 	state = {
@@ -25,25 +27,41 @@ class Contacts extends Component {
 
 	render() {
 		const { contacts } = this.state;
+		console.log(contacts);
 		return (
 			<div>
-				<table>
+				<table className="table table-striped lead">
 					<tbody>
-						{contacts &&
+						{contacts ? (
 							contacts.map((contacts) => {
 								return (
 									<tr key={contacts.Id}>
-										<td>{contacts.FirstName}</td>
+										<td>
+											<Picture
+												name={contacts.Photo}
+												className="rounded"
+												height="50"
+												width="50"
+											/>
+										</td>
+										<td>
+											<Link to={ClientRouter.profile + `/${contacts.Id}`}>
+												{contacts.FirstName}
+											</Link>
+										</td>
 										<td>{contacts.LastName}</td>
 										<td>{contacts.Username}</td>
 										<td>
 											<form onSubmit={(e) => this.handleSubmit(e, contacts.Id)}>
-												<button>Dialog</button>
+												<button className="btn btn-info">Dialog</button>
 											</form>
 										</td>
 									</tr>
 								);
-							})}
+							})
+						) : (
+							<h4>You have no contacts</h4>
+						)}
 					</tbody>
 				</table>
 			</div>

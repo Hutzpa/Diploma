@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import SendReq from "../../Network/SendReq";
 import ServerRouter from "./../../Network/ServerRouter";
+import Picture from "./../../Reusable/Image";
 
 class Profile extends Component {
 	state = {
@@ -52,7 +53,8 @@ class Profile extends Component {
 		const formData = new FormData();
 		formData.append("formFile", photo);
 		formData.append("fileName", photoName);
-		let response = await SendReq.post(ServerRouter.setProfilePicture, formData);
+		await SendReq.post(ServerRouter.setProfilePicture, formData);
+		alert("Profile photo will change after relogin");
 	};
 	handleFileSelect = (e) => {
 		this.setState({ photo: e.target.files[0] });
@@ -64,6 +66,14 @@ class Profile extends Component {
 		const { askedUser } = this.state;
 		return (
 			<div>
+				<div>
+					<Picture
+						name={currentUser.photo}
+						className="rounded"
+						height="150"
+						width="150"
+					/>
+				</div>
 				<h4>Установка фото</h4>
 				<form
 					onSubmit={this.addProfilePhoto}

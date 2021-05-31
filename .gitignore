@@ -4,3 +4,5 @@
 Backend/MyDiploma/appsettings.Development.json
 Backend/MyDiploma/appsettings.json
 Backend/.vs/MyDiploma/v16/.suo
+*.jpg
+*.png

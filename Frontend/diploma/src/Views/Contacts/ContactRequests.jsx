@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import ServerRouter from "../../Network/ServerRouter";
 import SendReq from "./../../Network/SendReq";
+import Picture from "./../../Reusable/Image";
+import { Link } from "react-router-dom";
+import ClientRouter from "./../../Network/ClientRouter";
 
 class ContactRequests extends Component {
 	state = {
@@ -24,16 +27,34 @@ class ContactRequests extends Component {
 
 	render() {
 		const { requests } = this.state;
+		console.log(requests);
 		return (
 			<div>
-				<table>
+				<table className="table table-striped lead">
 					<tbody>
-						{requests &&
+						{requests ? (
 							requests.map((request) => {
 								return (
 									<tr key={request.SenderId}>
-										<td>{/* фото отправителя */}</td>
-										<td>{/* Имя фамилия */}</td>
+										<td>
+											<Picture
+												name={request.Sender.Photo}
+												className="rounded"
+												height="50"
+												width="50"
+											/>
+										</td>
+										<td>
+											<Link to={ClientRouter.profile + `/${request.Sender.Id}`}>
+												{request.Sender.FirstName}
+											</Link>
+										</td>
+										<td>
+											<label>{request.Sender.LastName}</label>
+										</td>
+										<td>
+											<label>{request.Sender.Username}</label>
+										</td>
 										<td>
 											<form
 												onSubmit={(e) =>
@@ -45,7 +66,7 @@ class ContactRequests extends Component {
 													)
 												}
 											>
-												<button>Approve</button>
+												<button className="btn btn-success">Approve</button>
 											</form>
 										</td>
 										<td>
@@ -59,12 +80,15 @@ class ContactRequests extends Component {
 													)
 												}
 											>
-												<button>Reject</button>
+												<button className="btn btn-danger">Reject</button>
 											</form>
 										</td>
 									</tr>
 								);
-							})}
+							})
+						) : (
+							<h4>You have no contact requests</h4>
+						)}
 					</tbody>
 				</table>
 			</div>
