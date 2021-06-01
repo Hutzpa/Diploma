@@ -29,9 +29,6 @@ const VideoDialog = ({ _socket, nickname, id_my, id_companion }) => {
 				setStream(stream);
 				myVideo.current.srcObject = stream;
 			});
-
-		// socket.emit("getSocketId");
-		// socket.on("me", (id) => {});
 		setMe(id_my);
 
 		socket.on("callUser", (data) => {
@@ -121,25 +118,8 @@ const VideoDialog = ({ _socket, nickname, id_my, id_companion }) => {
 						) : null}
 					</div>
 				</div>
-				<div className="myId">
-					<CopyToClipboard text={me} style={{ marginBottom: "2rem" }}>
-						<Button
-							variant="contained"
-							color="primary"
-							startIcon={<AssignmentIcon fontSize="large" />}
-						>
-							Copy ID
-						</Button>
-					</CopyToClipboard>
-
-					{/* <TextField
-						id="filled-basic"
-						label="ID to call"
-						variant="filled"
-						value={idToCall}
-						onChange={(e) => setIdToCall(e.target.value)}
-					/> */}
-					<div className="call-button">
+				<div>
+					<div>
 						{callAccepted && !callEnded ? (
 							<Button variant="contained" color="secondary" onClick={leaveCall}>
 								End Call

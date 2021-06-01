@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import ClientRouter from "./../../Network/ClientRouter";
 import VideoDialog from "./VideoDialog";
 
-const DialogHeader = ({ firstName, lastName, socket, nickname, id }) => {
+const DialogHeader = ({ firstName, lastName }) => {
 	return (
 		<div className="container text-danger">
 			<Link to={ClientRouter.contacts}>
@@ -12,7 +12,6 @@ const DialogHeader = ({ firstName, lastName, socket, nickname, id }) => {
 			<div className="lead">
 				{firstName} {lastName}
 			</div>
-			<VideoDialog _socket={socket} nickname={nickname} id={id} />
 		</div>
 	);
 };

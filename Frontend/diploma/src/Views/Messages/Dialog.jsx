@@ -6,6 +6,7 @@ import SendReq from "./../../Network/SendReq";
 import ServerRouter from "./../../Network/ServerRouter";
 import ScrollToBottom from "react-scroll-to-bottom";
 import Message from "./Message";
+import VideoDialog from "./VideoDialog";
 
 class Dialog extends Component {
 	state = {
@@ -70,29 +71,46 @@ class Dialog extends Component {
 		const { message } = this.state;
 		const { companion } = this.state;
 		const { socket } = this.state;
-
+		console.log(messages);
+		console.log(_user);
 		return (
-			<div>
-				<DialogHeader
-					firstName={companion.firstName}
-					lastName={companion.lastName}
-					socket={socket}
-					nickname={this.state.user.firstName + " " + this.state.user.lastName}
-					id={_user.id}
-				/>
-				<ScrollToBottom>
-					{messages.map(({ Id, User, Text, SendingTime }) => (
-						<div key={parseInt(Id) === 0 ? Text : Id}>
-							<Message
-								message={Text}
-								senderId={User.id}
-								currentUserId={_user.id}
-								sendingTime={SendingTime}
-							/>
-						</div>
-					))}
-				</ScrollToBottom>
-				<div>
+			<div className="container">
+				<div className="row">
+					<div className="col-sm">
+						<DialogHeader
+							firstName={companion.firstName}
+							lastName={companion.lastName}
+						/>
+					</div>
+					<div className="col-sm">
+						<VideoDialog
+							_socket={socket}
+							nickname={
+								this.state.user.firstName + " " + this.state.user.lastName
+							}
+							id={_user.id}
+						/>
+					</div>
+				</div>
+
+				<div
+					className="row"
+					style={{ height: 500, width: 1080, overflow: "scroll" }}
+				>
+					<div className="col-sm-10">
+						{messages.map(({ Id, User, Text, SendingTime }) => (
+							<div key={parseInt(Id) === 0 ? Text : Id}>
+								<Message
+									message={Text}
+									senderId={User.Id}
+									currentUserId={_user.id}
+									sendingTime={SendingTime}
+								/>
+							</div>
+						))}
+					</div>
+				</div>
+				<div className="row">
 					<form onSubmit={(e) => this.handleSubmit(e)}>
 						<Input
 							name="message"
