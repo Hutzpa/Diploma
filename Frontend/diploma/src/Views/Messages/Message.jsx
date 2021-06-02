@@ -3,10 +3,7 @@ import ReactEmoji from "react-emoji";
 
 const Message = ({ message, senderId, currentUserId, sendingTime }) => {
 	let isSentByCurUser = senderId == currentUserId;
-	// console.log("isSentByCurUser");
-	// console.log(isSentByCurUser);
-	// console.log(senderId);
-	// console.log(currentUserId);
+
 	return isSentByCurUser ? (
 		<div className="container" style={{ backgroundColor: "lightcyan" }}>
 			<div className="justify-content-end">

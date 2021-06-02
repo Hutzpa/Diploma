@@ -7,6 +7,7 @@ import ServerRouter from "./../../Network/ServerRouter";
 import ScrollToBottom from "react-scroll-to-bottom";
 import Message from "./Message";
 import VideoDialog from "./VideoDialog";
+import ClientRouter from "./../../Network/ClientRouter";
 
 class Dialog extends Component {
 	state = {
@@ -16,6 +17,7 @@ class Dialog extends Component {
 		companion: { firstName: "", lastName: "", id: 0 },
 		socket: this.props.socket,
 		user: this.props.user,
+		isVideoOn: false,
 	};
 
 	async componentDidMount() {
@@ -61,8 +63,12 @@ class Dialog extends Component {
 			ChatRoomId: parseInt(this.state.dialogId),
 			Text: this.state.message,
 		});
-
 		this.setState({ message: "" });
+	};
+
+	clearTheVideo = () => {
+		const { isVideoOn } = this.state;
+		this.setState({ isVideoOn: !isVideoOn });
 	};
 
 	render() {
@@ -71,56 +77,63 @@ class Dialog extends Component {
 		const { message } = this.state;
 		const { companion } = this.state;
 		const { socket } = this.state;
-		console.log(messages);
-		console.log(_user);
+		const { isVideoOn } = this.state;
 		return (
-			<div className="container">
-				<div className="row">
-					<div className="col-sm">
-						<DialogHeader
-							firstName={companion.firstName}
-							lastName={companion.lastName}
-						/>
-					</div>
-					<div className="col-sm">
-						<VideoDialog
-							_socket={socket}
-							nickname={
-								this.state.user.firstName + " " + this.state.user.lastName
-							}
-							id={_user.id}
-						/>
-					</div>
-				</div>
-
-				<div
-					className="row"
-					style={{ height: 500, width: 1080, overflow: "scroll" }}
-				>
-					<div className="col-sm-10">
-						{messages.map(({ Id, User, Text, SendingTime }) => (
-							<div key={parseInt(Id) === 0 ? Text : Id}>
-								<Message
-									message={Text}
-									senderId={User.Id}
-									currentUserId={_user.id}
-									sendingTime={SendingTime}
+			<div>
+				<div className={!isVideoOn ? "container" : ""}>
+					<div className="row">
+						{!isVideoOn ? (
+							<div className="col-sm">
+								<DialogHeader
+									firstName={companion.firstName}
+									lastName={companion.lastName}
 								/>
 							</div>
-						))}
+						) : null}
+						<div className="col-sm">
+							<VideoDialog
+								_socket={socket}
+								nickname={
+									this.state.user.firstName + " " + this.state.user.lastName
+								}
+								id={_user.id}
+								isVideoOn={this.clearTheVideo}
+							/>
+						</div>
 					</div>
-				</div>
-				<div className="row">
-					<form onSubmit={(e) => this.handleSubmit(e)}>
-						<Input
-							name="message"
-							value={message}
-							onChange={this.handleChange}
-							inputType="text"
-							placeholder="Your message"
-							maxLength={2000}
-						/>
-					</form>
+					{!isVideoOn ? (
+						<div>
+							<div
+								className="row"
+								style={{ height: 500, width: 1080, overflow: "scroll" }}
+							>
+								<div className="col-sm-10">
+									{messages.map(({ Id, User, Text, SendingTime }) => (
+										<div key={parseInt(Id) === 0 ? Text : Id}>
+											<Message
+												message={Text}
+												senderId={User.Id}
+												currentUserId={_user.id}
+												sendingTime={SendingTime}
+											/>
+										</div>
+									))}
+								</div>
+							</div>
+							<div className="row">
+								<form onSubmit={(e) => this.handleSubmit(e)}>
+									<Input
+										name="message"
+										value={message}
+										onChange={this.handleChange}
+										inputType="text"
+										placeholder="Your message"
+										maxLength={2000}
+									/>
+								</form>
+							</div>
+						</div>
+					) : null}
 				</div>
 			</div>
 		);

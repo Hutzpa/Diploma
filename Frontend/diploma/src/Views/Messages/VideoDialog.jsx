@@ -7,7 +7,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import Peer from "simple-peer";
 
-const VideoDialog = ({ _socket, nickname, id_my, id_companion }) => {
+const VideoDialog = ({ _socket, nickname, id_my, id_companion, isVideoOn }) => {
 	const [me, setMe] = useState("");
 	const [socket, setSocket] = useState(_socket);
 	const [stream, setStream] = useState(); //
@@ -17,6 +17,7 @@ const VideoDialog = ({ _socket, nickname, id_my, id_companion }) => {
 	const [callAccepted, setCallAccepted] = useState(false);
 	const [idToCall, setIdToCall] = useState("");
 	const [callEnded, setCallEnded] = useState(false);
+	const [isHolographic, setIsHolographic] = useState(false);
 	const [name, setName] = useState("");
 	const myVideo = useRef(); //
 	const userVideo = useRef();
@@ -64,6 +65,7 @@ const VideoDialog = ({ _socket, nickname, id_my, id_companion }) => {
 			peer.signal(signal);
 		});
 		connectionRef.current = peer;
+		isVideoOn();
 	};
 
 	const answerCall = () => {
@@ -81,6 +83,8 @@ const VideoDialog = ({ _socket, nickname, id_my, id_companion }) => {
 			userVideo.current.srcObject = stream;
 		});
 
+		//Отключение и включение текстового чата
+		isVideoOn();
 		peer.signal(callerSignal);
 
 		connectionRef.current = peer;
@@ -88,42 +92,99 @@ const VideoDialog = ({ _socket, nickname, id_my, id_companion }) => {
 
 	const leaveCall = () => {
 		setCallEnded(true);
-		//connectionRef.current.destroy();
+		isVideoOn();
 	};
 
+	console.log("shit has changed");
+	console.log(callerSignal);
 	return (
 		<div>
-			<h1 style={{ textAlign: "center", color: "#fff" }}>Zoomish</h1>
-			<div className="container">
+			<div className={!isHolographic ? "container" : ""}>
 				<div className="video-container">
-					<div className="video">
-						{stream && (
-							<video
-								playsInline
-								muted
-								ref={myVideo}
-								autoPlay
-								style={{ width: "300px" }}
-							/>
-						)}
-					</div>
-					<div className="video">
-						{callAccepted && !callEnded ? (
-							<video
-								playsInline
-								ref={userVideo}
-								autoPlay
-								style={{ width: "300px" }}
-							/>
-						) : null}
+					<div>
+						<div className="video">
+							{stream && (
+								<div>
+									{!isHolographic ? (
+										<video
+											playsInline
+											muted
+											ref={myVideo}
+											autoPlay
+											style={{ width: "100px", height: "100px" }}
+										/>
+									) : null}
+								</div>
+							)}
+						</div>
+						<div className="video">
+							{callAccepted && !callEnded ? (
+								<div>
+									{!isHolographic ? (
+										<video
+											playsInline
+											ref={userVideo}
+											autoPlay
+											style={{ width: "300px" }}
+										/>
+									) : (
+										<div
+											style={{
+												// backgroundColor: "red",
+												height: "1000px",
+												width: "1900px",
+											}}
+										>
+											<video
+												playsInline
+												ref={userVideo}
+												autoPlay
+												style={{ width: "100px", height: "100px" }}
+											/>
+											{/* <video
+												playsInline
+												ref={userVideo}
+												autoPlay
+												//style={{ width: "100px", height: "100px" }}
+											/>
+											<video
+												playsInline
+												ref={userVideo}
+												autoPlay
+												//style={{ width: "100px", height: "100px" }}
+											/>
+											<video
+												playsInline
+												ref={userVideo}
+												autoPlay
+												//style={{ width: "100px", height: "100px" }}
+											/> */}
+										</div>
+									)}
+								</div>
+							) : null}
+						</div>
 					</div>
 				</div>
-				<div>
+				<div style={{ backgroundColor: "green" }}>
 					<div>
 						{callAccepted && !callEnded ? (
-							<Button variant="contained" color="secondary" onClick={leaveCall}>
-								End Call
-							</Button>
+							<div>
+								<Button
+									variant="contained"
+									color="secondary"
+									onClick={() => setIsHolographic(!isHolographic)}
+								>
+									Make holographic
+								</Button>
+								<Button
+									variant="contained"
+									color="secondary"
+									onClick={leaveCall}
+								>
+									End Call
+								</Button>
+							</div>
 						) : (
 							<IconButton
 								color="primary"
@@ -138,8 +199,8 @@ const VideoDialog = ({ _socket, nickname, id_my, id_companion }) => {
 						)}
 						{idToCall}
 					</div>
-				</div>
-				<div>
+					{/* </div>
+				<div> */}
 					{receivingCall && !callAccepted ? (
 						<div className="caller">
 							<h1>{name} is calling...</h1>
