@@ -6,6 +6,7 @@ import PhoneIcon from "@material-ui/icons/Phone";
 import React, { useEffect, useRef, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import Peer from "simple-peer";
+import Video from "./Video";
 
 const VideoDialog = ({ _socket, nickname, id_my, id_companion, isVideoOn }) => {
 	const [me, setMe] = useState("");
@@ -21,6 +22,10 @@ const VideoDialog = ({ _socket, nickname, id_my, id_companion, isVideoOn }) => {
 	const [name, setName] = useState("");
 	const myVideo = useRef(); //
 	const userVideo = useRef();
+	const userVideo1 = useRef();
+	const userVideo2 = useRef();
+	const userVideo3 = useRef();
+	const userVideo4 = useRef();
 	const connectionRef = useRef();
 
 	useEffect(() => {
@@ -30,6 +35,9 @@ const VideoDialog = ({ _socket, nickname, id_my, id_companion, isVideoOn }) => {
 				setStream(stream);
 				myVideo.current.srcObject = stream;
 			});
+		console.log("myVideo");
+		console.log(myVideo);
+
 		setMe(id_my);
 
 		socket.on("callUser", (data) => {
@@ -57,18 +65,19 @@ const VideoDialog = ({ _socket, nickname, id_my, id_companion, isVideoOn }) => {
 		});
 
 		peer.on("stream", (stream) => {
-			userVideo.current.srcObject = stream;
+			if (userVideo.current) userVideo.current.srcObject = stream;
 		});
 
 		socket.on("callAccepted", (signal) => {
 			setCallAccepted(true);
 			peer.signal(signal);
 		});
-		connectionRef.current = peer;
+
+		if (connectionRef.current) connectionRef.current = peer;
 		isVideoOn();
 	};
 
-	const answerCall = () => {
+	const answerCall = (holographic) => {
 		setCallAccepted(true);
 		const peer = new Peer({
 			initiator: false,
@@ -80,14 +89,21 @@ const VideoDialog = ({ _socket, nickname, id_my, id_companion, isVideoOn }) => {
 			socket.emit("answerCall", { signal: data, to: caller });
 		});
 		peer.on("stream", (stream) => {
-			userVideo.current.srcObject = stream;
+			if (holographic) {
+				setIsHolographic(true);
+				userVideo1.current.srcObject = stream;
+				userVideo2.current.srcObject = stream;
+				userVideo3.current.srcObject = stream;
+				userVideo4.current.srcObject = stream;
+			} else {
+				userVideo.current.srcObject = stream;
+			}
 		});
 
 		//Отключение и включение текстового чата
 		isVideoOn();
 		peer.signal(callerSignal);
-
-		connectionRef.current = peer;
+		if (connectionRef.current) connectionRef.current = peer;
 	};
 
 	const leaveCall = () => {
@@ -95,8 +111,6 @@ const VideoDialog = ({ _socket, nickname, id_my, id_companion, isVideoOn }) => {
 		isVideoOn();
 	};
 
-	console.log("shit has changed");
-	console.log(callerSignal);
 	return (
 		<div>
 			<div className={!isHolographic ? "container" : ""}>
@@ -106,13 +120,9 @@ const VideoDialog = ({ _socket, nickname, id_my, id_companion, isVideoOn }) => {
 							{stream && (
 								<div>
 									{!isHolographic ? (
-										<video
-											playsInline
-											muted
-											ref={myVideo}
-											autoPlay
-											style={{ width: "100px", height: "100px" }}
-										/>
+										<div>
+											<Video video={myVideo}></Video>
+										</div>
 									) : null}
 								</div>
 							)}
@@ -121,44 +131,21 @@ const VideoDialog = ({ _socket, nickname, id_my, id_companion, isVideoOn }) => {
 							{callAccepted && !callEnded ? (
 								<div>
 									{!isHolographic ? (
-										<video
-											playsInline
-											ref={userVideo}
-											autoPlay
-											style={{ width: "300px" }}
-										/>
+										<div>
+											<Video video={userVideo}></Video>
+										</div>
 									) : (
 										<div
 											style={{
-												// backgroundColor: "red",
+												//backgroundColor: "red",
 												height: "1000px",
 												width: "1900px",
 											}}
 										>
-											<video
-												playsInline
-												ref={userVideo}
-												autoPlay
-												style={{ width: "100px", height: "100px" }}
-											/>
-											{/* <video
-												playsInline
-												ref={userVideo}
-												autoPlay
-												//style={{ width: "100px", height: "100px" }}
-											/>
-											<video
-												playsInline
-												ref={userVideo}
-												autoPlay
-												//style={{ width: "100px", height: "100px" }}
-											/>
-											<video
-												playsInline
-												ref={userVideo}
-												autoPlay
-												//style={{ width: "100px", height: "100px" }}
-											/> */}
+											<Video video={userVideo1}></Video>
+											<Video video={userVideo2}></Video>
+											<Video video={userVideo3}></Video>
+											<Video video={userVideo4}></Video>
 										</div>
 									)}
 								</div>
@@ -170,13 +157,6 @@ const VideoDialog = ({ _socket, nickname, id_my, id_companion, isVideoOn }) => {
 					<div>
 						{callAccepted && !callEnded ? (
 							<div>
-								<Button
-									variant="contained"
-									color="secondary"
-									onClick={() => setIsHolographic(!isHolographic)}
-								>
-									Make holographic
-								</Button>
 								<Button
 									variant="contained"
 									color="secondary"
@@ -199,13 +179,22 @@ const VideoDialog = ({ _socket, nickname, id_my, id_companion, isVideoOn }) => {
 						)}
 						{idToCall}
 					</div>
-					{/* </div>
-				<div> */}
 					{receivingCall && !callAccepted ? (
 						<div className="caller">
 							<h1>{name} is calling...</h1>
-							<Button variant="contained" color="primary" onClick={answerCall}>
+							<Button
+								variant="contained"
+								color="primary"
+								onClick={() => answerCall(false)}
+							>
 								Answer
+							</Button>
+							<Button
+								variant="contained"
+								color="primary"
+								onClick={() => answerCall(true)}
+							>
+								Answer holographic
 							</Button>
 						</div>
 					) : null}
