@@ -1,13 +1,16 @@
 import React, { Component, memo } from "react";
 
-const Video = ({ video }) => {
+import "../Messages/Video.css";
+
+const Video = ({ video, style, className }) => {
 	return video ? (
 		<video
 			playsInline
 			muted
 			ref={video}
+			className={className}
 			autoPlay
-			style={{ width: "100px", height: "100px" }}
+			style={style}
 		/>
 	) : null;
 };

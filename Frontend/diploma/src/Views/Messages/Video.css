@@ -1,0 +1,24 @@
+video {
+	transform: rotate(20deg);
+}
+
+.topOne {
+	transform: rotate(0deg);
+	position: relative;
+	text-align: center;
+}
+.bottomOne {
+	transform: rotate(180deg);
+	position: relative;
+	text-align: center;
+}
+.middleRight {
+	transform: rotate(90deg);
+	position: relative;
+	text-align: end;
+}
+.middleLeft {
+	transform: rotate(270deg);
+	position: relative;
+	text-align: start;
+}

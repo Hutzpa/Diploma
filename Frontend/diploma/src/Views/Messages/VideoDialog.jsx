@@ -8,6 +8,8 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import Peer from "simple-peer";
 import Video from "./Video";
 
+import "./Video.css";
+
 const VideoDialog = ({ _socket, nickname, id_my, id_companion, isVideoOn }) => {
 	const [me, setMe] = useState("");
 	const [socket, setSocket] = useState(_socket);
@@ -121,7 +123,10 @@ const VideoDialog = ({ _socket, nickname, id_my, id_companion, isVideoOn }) => {
 								<div>
 									{!isHolographic ? (
 										<div>
-											<Video video={myVideo}></Video>
+											<Video
+												video={myVideo}
+												style={{ width: "100px", height: "100px" }}
+											></Video>
 										</div>
 									) : null}
 								</div>
@@ -132,20 +137,46 @@ const VideoDialog = ({ _socket, nickname, id_my, id_companion, isVideoOn }) => {
 								<div>
 									{!isHolographic ? (
 										<div>
-											<Video video={userVideo}></Video>
+											<Video
+												video={userVideo}
+												style={{ width: "100px", height: "100px" }}
+											></Video>
 										</div>
 									) : (
 										<div
 											style={{
-												//backgroundColor: "red",
-												height: "1000px",
-												width: "1900px",
+												backgroundColor: "black",
+												height: "1200px",
+												width: "2500px",
 											}}
 										>
-											<Video video={userVideo1}></Video>
-											<Video video={userVideo2}></Video>
-											<Video video={userVideo3}></Video>
-											<Video video={userVideo4}></Video>
+											<div className="container">
+												<div className="row">
+													<Video
+														video={userVideo1}
+														className="topOne"
+														style={{ width: "400px", height: "400px" }}
+													></Video>
+												</div>
+												<div className="row">
+													<Video
+														video={userVideo3}
+														className="middleLeft"
+														style={{ width: "400px", height: "400px" }}
+													></Video>
+													<Video
+														video={userVideo2}
+														className="middleRight"
+														style={{ width: "400px", height: "400px" }}
+													></Video>
+												</div>
+
+												<Video
+													video={userVideo4}
+													className="bottomOne"
+													style={{ width: "400px", height: "400px" }}
+												></Video>
+											</div>
 										</div>
 									)}
 								</div>
