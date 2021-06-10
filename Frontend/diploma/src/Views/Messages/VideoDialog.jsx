@@ -68,6 +68,11 @@ const VideoDialog = ({ _socket, nickname, id_my, id_companion, isVideoOn }) => {
 
 		peer.on("stream", (stream) => {
 			if (userVideo.current) userVideo.current.srcObject = stream;
+			setIsHolographic(true);
+			userVideo1.current.srcObject = stream;
+			userVideo2.current.srcObject = stream;
+			userVideo3.current.srcObject = stream;
+			userVideo4.current.srcObject = stream;
 		});
 
 		socket.on("callAccepted", (signal) => {
@@ -197,16 +202,28 @@ const VideoDialog = ({ _socket, nickname, id_my, id_companion, isVideoOn }) => {
 								</Button>
 							</div>
 						) : (
-							<IconButton
-								color="primary"
-								aria-label="call"
-								onClick={() => {
-									callUser(idToCall);
-									setName(nickname);
-								}}
-							>
-								<PhoneIcon fontSize="large" />
-							</IconButton>
+							<div>
+								<IconButton
+									color="primary"
+									aria-label="call"
+									onClick={() => {
+										callUser(idToCall);
+										setName(nickname);
+									}}
+								>
+									<PhoneIcon fontSize="large" />
+								</IconButton>
+								<IconButton
+									color="secondary"
+									aria-label="call"
+									onClick={() => {
+										callUser(idToCall);
+										setName(nickname);
+									}}
+								>
+									<PhoneIcon fontSize="large" />
+								</IconButton>
+							</div>
 						)}
 						{idToCall}
 					</div>
