@@ -8,7 +8,7 @@ namespace MyDiploma.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class UserController : ControllerBase
     {
         private IUserService _userService;
@@ -32,6 +32,11 @@ namespace MyDiploma.Controllers
             return Ok(new { Id = user.Id, FirstName = user.FirstName, LastName = user.LastName, Username = user.Username,RequestDisabled = disabled });
         }
 
-
+        [HttpGet("getUserPhoto")]
+        public IActionResult GetUserPhoto()
+        {
+            Entities.User askedUser = (Entities.User)HttpContext.Items["User"];
+            return Ok(new { photo = askedUser.Photo });
+        }
     }
 }

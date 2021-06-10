@@ -58,7 +58,7 @@ namespace MyDiploma.Services
                 FirstName = request.FirstName,
                 LastName = request.LastName,
                 PasswordHash = _hashService.Hash(request.Password),
-                Photo = "blank.png"
+                
             };
             _dbContext.Users.Add(user);
             if (_dbContext.SaveChanges() == 0)
@@ -82,7 +82,7 @@ namespace MyDiploma.Services
                     new Claim("firstName",user.FirstName),
                     new Claim("lastName",user.LastName),
                     new Claim("username",user.Username),
-                    new Claim("photo",user.Photo)
+                    
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

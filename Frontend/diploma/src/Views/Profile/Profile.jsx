@@ -68,7 +68,7 @@ class Profile extends Component {
 			<div>
 				<div>
 					<Picture
-						name={currentUser.photo}
+						name={currentUser.Photo}
 						className="rounded"
 						height="150"
 						width="150"
@@ -77,7 +77,7 @@ class Profile extends Component {
 				<h4>Установка фото</h4>
 				<form
 					onSubmit={this.addProfilePhoto}
-					enctype="multipart/form-data"
+					encType="multipart/form-data"
 					method="post"
 				>
 					<input

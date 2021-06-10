@@ -18,6 +18,8 @@ import ContactRequests from "./Views/Contacts/ContactRequests";
 import Contacts from "./Views/Contacts/Contacts";
 import Dialog from "./Views/Messages/Dialog";
 import VideoDialog from "./Views/Messages/VideoDialog";
+import SendReq from "./Network/SendReq";
+import ServerRouter from "./Network/ServerRouter";
 
 const socket = io("localhost:5000");
 class App extends Component {
@@ -26,8 +28,14 @@ class App extends Component {
 			? jwtDecode(localStorage.getItem("JWT"))
 			: "",
 	};
-	componentDidMount() {
+	async componentDidMount() {
 		if (this.state.user) {
+			const { data } = await SendReq.get(ServerRouter.getPhoto);
+			console.log(data.photo);
+			let user = this.state.user;
+			user.Photo = data.photo;
+			this.setState({ user });
+			console.log(this.state.user);
 			socket.emit("getUserData", this.state.user.id);
 		}
 	}

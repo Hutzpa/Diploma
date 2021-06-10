@@ -7,7 +7,7 @@ const Picture = ({ name, height, width, className }) => {
 			src={
 				name ? ServerRouter.avatar + name : ServerRouter.avatar + "blank.png"
 			}
-			class={className}
+			className={className}
 			height={height}
 			width={width}
 		/>
