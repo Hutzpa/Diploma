@@ -26,26 +26,18 @@ class App extends Component {
 			? jwtDecode(localStorage.getItem("JWT"))
 			: "",
 	};
-
-	constructor(props) {
-		super(props);
-	}
-
 	componentDidMount() {
 		if (this.state.user) {
 			socket.emit("getUserData", this.state.user.id);
 		}
 	}
-
 	render() {
 		const { user } = this.state;
-
 		return (
 			<div>
 				<Navbar user={this.state.user} />
 				<div className="content">
 					<Switch>
-						{/* <Route exact path={ClientRouter.home} component={Home} /> */}
 						<Route
 							path={ClientRouter.chatroom + "/:id"}
 							render={(props) => (
@@ -59,7 +51,6 @@ class App extends Component {
 						<Route path={ClientRouter.login} component={Login} />
 						<Route path={ClientRouter.register} component={Register} />
 						<Route path={ClientRouter.logout} component={Logout} />
-
 						<Route
 							path={ClientRouter.search}
 							render={(props) => <Search user={user} {...props} />}
@@ -76,7 +67,6 @@ class App extends Component {
 							path={ClientRouter.contacts}
 							render={(props) => <Contacts user={user} {...props} />}
 						/>
-						{/* <Redirect to={ClientRouter.home} /> */}
 						{user ? (
 							<Redirect to={ClientRouter.contacts} />
 						) : (
