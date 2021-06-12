@@ -116,6 +116,7 @@ const VideoDialog = ({ _socket, nickname, id_my, id_companion, isVideoOn }) => {
 	const leaveCall = () => {
 		setCallEnded(true);
 		isVideoOn();
+		window.location.reload();
 	};
 
 	return (

@@ -112,7 +112,7 @@ class Dialog extends Component {
 										<div key={parseInt(Id) === 0 ? Text : Id}>
 											<Message
 												message={Text}
-												senderId={User.Id}
+												senderId={User.Id ? User.Id : User.id}
 												currentUserId={_user.id}
 												sendingTime={SendingTime}
 											/>

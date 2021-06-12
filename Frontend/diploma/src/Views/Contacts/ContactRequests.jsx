@@ -23,6 +23,8 @@ class ContactRequests extends Component {
 			ReceiverId: receiverId,
 			Approved: approved,
 		});
+		alert("Done");
+		window.location.reload();
 	};
 
 	render() {

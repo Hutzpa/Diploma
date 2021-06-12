@@ -89,21 +89,14 @@ class Search extends Component {
 											<td>
 												<label>{user.Username}</label>
 											</td>
-											{/* <td>
-												<form onSubmit={(e) => this.addToContacts(e, user.Id)}>
-													<input
-														className="btn btn-info"
-														type="submit"
-														value="Add to contacts"
-													/>
-												</form>
-											</td> */}
 										</tr>
 									);
 								})
 							) : (
 								<tr>
-									<h4>Nothing been found</h4>
+									<td>
+										<h4>Nothing been found</h4>
+									</td>
 								</tr>
 							)}
 						</tbody>

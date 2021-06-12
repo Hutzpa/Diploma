@@ -26,10 +26,11 @@ namespace MyDiploma.Controllers
         {
             Entities.User askedUser = (Entities.User)HttpContext.Items["User"];
             var user = _userService.GetById(id);
-            var disabled = _context.Contacts.FirstOrDefault(o => o.ReceiverId == id  && o.SenderId == askedUser.Id) != null;
+            var disabled_send = _context.Contacts.FirstOrDefault(o => o.ReceiverId == id  && o.SenderId == askedUser.Id) != null;
+            var disabled_rec = _context.Contacts.FirstOrDefault(o => o.SenderId == id  && o.ReceiverId == askedUser.Id) != null;
             if (user == null)
                 return BadRequest();
-            return Ok(new { Id = user.Id, FirstName = user.FirstName, LastName = user.LastName, Username = user.Username,RequestDisabled = disabled });
+            return Ok(new { Id = user.Id, FirstName = user.FirstName, LastName = user.LastName, Username = user.Username,RequestDisabled = disabled_send| disabled_rec });
         }
 
         [HttpGet("getUserPhoto")]

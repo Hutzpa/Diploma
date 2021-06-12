@@ -64,6 +64,10 @@ class Profile extends Component {
 	render() {
 		const { currentUser } = this.state;
 		const { askedUser } = this.state;
+		console.log("askedUser");
+		console.log(askedUser);
+		console.log("currentUser");
+		console.log(currentUser);
 		return (
 			<div>
 				<div>
@@ -74,33 +78,38 @@ class Profile extends Component {
 						width="150"
 					/>
 				</div>
-				<h4>Установка фото</h4>
-				<form
-					onSubmit={this.addProfilePhoto}
-					encType="multipart/form-data"
-					method="post"
-				>
-					<input
-						className="form-control-file"
-						type="file"
-						accept="image/*"
-						name="photo"
-						//value={this.state.photo}
-						id="photo"
-						onChange={this.handleFileSelect}
-						required
-					/>
+				{!this.props.match.params.id ? (
+					<div>
+						<form
+							onSubmit={this.addProfilePhoto}
+							encType="multipart/form-data"
+							method="post"
+						>
+							<input
+								className="form-control-file"
+								type="file"
+								accept="image/*"
+								name="photo"
+								id="photo"
+								onChange={this.handleFileSelect}
+								required
+							/>
 
-					<input
-						className="btn btn-outline-success form-control"
-						type="submit"
-						value="grgergre"
-					/>
-				</form>
+							<input
+								className="btn btn-outline-success form-control"
+								type="submit"
+								value="grgergre"
+							/>
+						</form>
+					</div>
+				) : (
+					<div></div>
+				)}
+
 				<h4>Отпрвка запросов пользователю</h4>
 				{Object.keys(askedUser).length !== 0 && (
 					<div>
-						{askedUser.id == currentUser.id ? (
+						{parseInt(askedUser.id) == parseInt(currentUser.id) ? (
 							""
 						) : (
 							<form onSubmit={this.handleSubmit}>
