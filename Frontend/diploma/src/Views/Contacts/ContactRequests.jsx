@@ -29,12 +29,11 @@ class ContactRequests extends Component {
 
 	render() {
 		const { requests } = this.state;
-		console.log(requests);
 		return (
 			<div>
 				<table className="table table-striped lead">
 					<tbody>
-						{requests ? (
+						{requests.length > 0 ? (
 							requests.map((request) => {
 								return (
 									<tr key={request.SenderId}>
@@ -89,7 +88,13 @@ class ContactRequests extends Component {
 								);
 							})
 						) : (
-							<h4>You have no contact requests</h4>
+							<tr>
+								<td>
+									<h4 className="text-center lead mt-3">
+										You have no contact requests
+									</h4>
+								</td>
+							</tr>
 						)}
 					</tbody>
 				</table>

@@ -45,62 +45,61 @@ class Search extends Component {
 		const { matches } = this.state;
 		const { params } = this.state;
 		return (
-			<div
-				className="container"
-				style={{
-					display: "flex",
-					justifyContent: "center",
-					alignItems: "center",
-				}}
-			>
-				<div className="row">
-					<Input
-						name="query"
-						value={params.query}
-						onChange={this.handleChange}
-						inputType="text"
-						placeholder="User you are looking for..."
-						maxLength={15}
-					/>
+			<div className="container">
+				<div className="row mt-3">
+					<div className="col"></div>
+					<div className="col-6">
+						<Input
+							name="query"
+							value={params.query}
+							onChange={this.handleChange}
+							inputType="text"
+							placeholder="User you are looking for..."
+							maxLength={15}
+						/>
+					</div>
+					<div className="col"></div>
 				</div>
 				<div className="row">
-					<table className="table table-striped lead">
-						<tbody>
-							{matches.length > 0 ? (
-								matches.map((user) => {
-									return (
-										<tr key={user.id}>
-											<td>
-												<Picture
-													name={user.Photo}
-													className="rounded"
-													height="50"
-													width="50"
-												/>
-											</td>
-											<td>
-												<Link to={ClientRouter.profile + `/${user.Id}`}>
-													{user.FirstName}
-												</Link>
-											</td>
-											<td>
-												<label>{user.LastName}</label>
-											</td>
-											<td>
-												<label>{user.Username}</label>
-											</td>
-										</tr>
-									);
-								})
-							) : (
-								<tr>
-									<td>
-										<h4>Nothing been found</h4>
-									</td>
-								</tr>
-							)}
-						</tbody>
-					</table>
+					<div className="col">
+						<table className="table table-striped lead">
+							<tbody>
+								{matches.length > 0 ? (
+									matches.map((user) => {
+										return (
+											<tr key={user.id}>
+												<td>
+													<Picture
+														name={user.Photo}
+														className="rounded"
+														height="50"
+														width="50"
+													/>
+												</td>
+												<td>
+													<Link to={ClientRouter.profile + `/${user.Id}`}>
+														{user.FirstName}
+													</Link>
+												</td>
+												<td>
+													<label>{user.LastName}</label>
+												</td>
+												<td>
+													<label>{user.Username}</label>
+												</td>
+											</tr>
+										);
+									})
+								) : (
+									<tr>
+										<td>
+											<h4 className="text-center lead">Search</h4>
+										</td>
+									</tr>
+								)}
+							</tbody>
+						</table>
+					</div>
 				</div>
 			</div>
 		);

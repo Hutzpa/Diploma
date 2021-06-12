@@ -31,11 +31,9 @@ class App extends Component {
 	async componentDidMount() {
 		if (this.state.user) {
 			const { data } = await SendReq.get(ServerRouter.getPhoto);
-			console.log(data.photo);
 			let user = this.state.user;
 			user.Photo = data.photo;
 			this.setState({ user });
-			console.log(this.state.user);
 			socket.emit("getUserData", this.state.user.id);
 		}
 	}

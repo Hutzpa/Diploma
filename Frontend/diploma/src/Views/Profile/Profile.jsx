@@ -64,65 +64,68 @@ class Profile extends Component {
 	render() {
 		const { currentUser } = this.state;
 		const { askedUser } = this.state;
-		console.log("askedUser");
-		console.log(askedUser);
-		console.log("currentUser");
-		console.log(currentUser);
 		return (
-			<div>
-				<div>
-					<Picture
-						name={currentUser.Photo}
-						className="rounded"
-						height="150"
-						width="150"
-					/>
+			<div className="container">
+				<div className="row mt-3">
+					<div className="col"></div>
+					<div className="col-6">
+						<Picture
+							name={currentUser.Photo}
+							className="rounded"
+							height="150"
+							width="150"
+						/>
+					</div>
+					<div className="col"></div>
 				</div>
-				{!this.props.match.params.id ? (
-					<div>
-						<form
-							onSubmit={this.addProfilePhoto}
-							encType="multipart/form-data"
-							method="post"
-						>
-							<input
-								className="form-control-file"
-								type="file"
-								accept="image/*"
-								name="photo"
-								id="photo"
-								onChange={this.handleFileSelect}
-								required
-							/>
+				<div className="row">
+					{!this.props.match.params.id ? (
+						<div className="col">
+							<form
+								onSubmit={this.addProfilePhoto}
+								encType="multipart/form-data"
+								method="post"
+							>
+								<input
+									className="form-control-file"
+									type="file"
+									accept="image/*"
+									name="photo"
+									id="photo"
+									onChange={this.handleFileSelect}
+									required
+								/>
 
-							<input
-								className="btn btn-outline-success form-control"
-								type="submit"
-								value="grgergre"
-							/>
-						</form>
-					</div>
-				) : (
-					<div></div>
-				)}
-
-				<h4>Отпрвка запросов пользователю</h4>
-				{Object.keys(askedUser).length !== 0 && (
-					<div>
-						{parseInt(askedUser.id) == parseInt(currentUser.id) ? (
-							""
-						) : (
-							<form onSubmit={this.handleSubmit}>
-								<button
-									disabled={askedUser.requestDisabled}
-									className="btn btn-primary"
-								>
-									Send contact request
-								</button>
+								<input
+									style={{ width: "200px" }}
+									className="btn btn-outline-success form-control mt-2"
+									type="submit"
+									value="Apply new picture"
+								/>
 							</form>
-						)}
-					</div>
-				)}
+						</div>
+					) : (
+						<div></div>
+					)}
+				</div>
+				<div className="row">
+					{Object.keys(askedUser).length !== 0 && (
+						<div>
+							{parseInt(askedUser.id) == parseInt(currentUser.id) ? (
+								""
+							) : (
+								<form onSubmit={this.handleSubmit}>
+									<button
+										disabled={askedUser.requestDisabled}
+										className="btn btn-primary"
+									>
+										Send contact request
+									</button>
+								</form>
+							)}
+						</div>
+					)}
+				</div>
 			</div>
 		);
 	}
