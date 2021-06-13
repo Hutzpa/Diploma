@@ -97,6 +97,7 @@ class Dialog extends Component {
 									this.state.user.firstName + " " + this.state.user.lastName
 								}
 								id={_user.id}
+								nameToCall={companion.firstName + " " + companion.lastName}
 								isVideoOn={this.clearTheVideo}
 							/>
 						</div>

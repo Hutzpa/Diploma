@@ -10,7 +10,14 @@ import Video from "./Video";
 
 import "./Video.css";
 
-const VideoDialog = ({ _socket, nickname, id_my, id_companion, isVideoOn }) => {
+const VideoDialog = ({
+	_socket,
+	nickname,
+	id_my,
+	id_companion,
+	isVideoOn,
+	nameToCall,
+}) => {
 	const [me, setMe] = useState("");
 	const [socket, setSocket] = useState(_socket);
 	const [stream, setStream] = useState(); //
@@ -22,6 +29,8 @@ const VideoDialog = ({ _socket, nickname, id_my, id_companion, isVideoOn }) => {
 	const [callEnded, setCallEnded] = useState(false);
 	const [isHolographic, setIsHolographic] = useState(false);
 	const [name, setName] = useState("");
+	const [amIHitCall, setAmIHitCall] = useState(false);
+	const [playCall, setPlayCall] = useState(true);
 	const myVideo = useRef(); //
 	const userVideo = useRef();
 	const userVideo1 = useRef();
@@ -30,6 +39,9 @@ const VideoDialog = ({ _socket, nickname, id_my, id_companion, isVideoOn }) => {
 	const userVideo4 = useRef();
 	const connectionRef = useRef();
 
+	const audio = new Audio(
+		"https://samplelib.com/lib/preview/mp3/sample-15s.mp3"
+	);
 	useEffect(() => {
 		navigator.mediaDevices
 			.getUserMedia({ video: true, audio: true })
@@ -41,6 +53,7 @@ const VideoDialog = ({ _socket, nickname, id_my, id_companion, isVideoOn }) => {
 		setMe(id_my);
 
 		socket.on("callUser", (data) => {
+			togglePlay();
 			setReceivingCall(true);
 			setCaller(data.from);
 			setName(data.name);
@@ -48,7 +61,12 @@ const VideoDialog = ({ _socket, nickname, id_my, id_companion, isVideoOn }) => {
 		});
 	}, []);
 
+	const togglePlay = () => {
+		setPlayCall(!playCall);
+		playCall ? audio.play() : audio.pause();
+	};
 	const callUser = (id, isHolog) => {
+		setAmIHitCall(true);
 		const peer = new Peer({
 			initiator: true,
 			trickle: false,
@@ -235,21 +253,27 @@ const VideoDialog = ({ _socket, nickname, id_my, id_companion, isVideoOn }) => {
 					</div>
 					{receivingCall && !callAccepted ? (
 						<div className="caller">
-							<h1>{name} is calling...</h1>
-							<Button
-								variant="contained"
-								color="primary"
-								onClick={() => answerCall(false)}
-							>
-								Answer
-							</Button>
-							<Button
-								variant="contained"
-								color="primary"
-								onClick={() => answerCall(true)}
-							>
-								Answer holographic
-							</Button>
+							{!amIHitCall ? (
+								<div>
+									<h1>{name} is calling...</h1>
+									<Button
+										variant="contained"
+										color="primary"
+										onClick={() => answerCall(false)}
+									>
+										Answer
+									</Button>
+									<Button
+										variant="contained"
+										color="primary"
+										onClick={() => answerCall(true)}
+									>
+										Answer holographic
+									</Button>
+								</div>
+							) : (
+								<h1>You are calling {nameToCall}</h1>
+							)}
 						</div>
 					) : null}
 				</div>
