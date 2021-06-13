@@ -66,7 +66,8 @@ const VideoDialog = ({
 		playCall ? audio.play() : audio.pause();
 	};
 	const callUser = (id, isHolog) => {
-		setAmIHitCall(true);
+		//setAmIHitCall(true);
+		audio.play();
 		const peer = new Peer({
 			initiator: true,
 			trickle: false,
@@ -95,6 +96,7 @@ const VideoDialog = ({
 
 		socket.on("callAccepted", (signal) => {
 			setCallAccepted(true);
+			audio.pause();
 			peer.signal(signal);
 		});
 
@@ -104,6 +106,7 @@ const VideoDialog = ({
 
 	const answerCall = (holographic) => {
 		setCallAccepted(true);
+		//togglePlay();
 		const peer = new Peer({
 			initiator: false,
 			trickle: false,
