@@ -37,8 +37,6 @@ const VideoDialog = ({ _socket, nickname, id_my, id_companion, isVideoOn }) => {
 				setStream(stream);
 				myVideo.current.srcObject = stream;
 			});
-		console.log("myVideo");
-		console.log(myVideo);
 
 		setMe(id_my);
 
@@ -50,7 +48,7 @@ const VideoDialog = ({ _socket, nickname, id_my, id_companion, isVideoOn }) => {
 		});
 	}, []);
 
-	const callUser = (id) => {
+	const callUser = (id, isHolog) => {
 		const peer = new Peer({
 			initiator: true,
 			trickle: false,
@@ -68,11 +66,13 @@ const VideoDialog = ({ _socket, nickname, id_my, id_companion, isVideoOn }) => {
 
 		peer.on("stream", (stream) => {
 			if (userVideo.current) userVideo.current.srcObject = stream;
-			setIsHolographic(true);
-			userVideo1.current.srcObject = stream;
-			userVideo2.current.srcObject = stream;
-			userVideo3.current.srcObject = stream;
-			userVideo4.current.srcObject = stream;
+			if (isHolog) {
+				setIsHolographic(true);
+				userVideo1.current.srcObject = stream;
+				userVideo2.current.srcObject = stream;
+				userVideo3.current.srcObject = stream;
+				userVideo4.current.srcObject = stream;
+			}
 		});
 
 		socket.on("callAccepted", (signal) => {
@@ -120,9 +120,9 @@ const VideoDialog = ({ _socket, nickname, id_my, id_companion, isVideoOn }) => {
 	};
 
 	return (
-		<div>
-			<div className={!isHolographic ? "container" : ""}>
-				<div className="video-container">
+		<div className={!isHolographic ? "container" : ""}>
+			<div className="row">
+				<div className="video-container col-6 ">
 					<div>
 						<div className="video">
 							{stream && (
@@ -131,7 +131,7 @@ const VideoDialog = ({ _socket, nickname, id_my, id_companion, isVideoOn }) => {
 										<div>
 											<Video
 												video={myVideo}
-												style={{ width: "100px", height: "100px" }}
+												style={{ width: "150px", height: "150px" }}
 											></Video>
 										</div>
 									) : null}
@@ -145,7 +145,7 @@ const VideoDialog = ({ _socket, nickname, id_my, id_companion, isVideoOn }) => {
 										<div>
 											<Video
 												video={userVideo}
-												style={{ width: "100px", height: "100px" }}
+												style={{ width: "400px", height: "400px" }}
 											></Video>
 										</div>
 									) : (
@@ -190,7 +190,7 @@ const VideoDialog = ({ _socket, nickname, id_my, id_companion, isVideoOn }) => {
 						</div>
 					</div>
 				</div>
-				<div style={{ backgroundColor: "green" }}>
+				<div className="col-6">
 					<div>
 						{callAccepted && !callEnded ? (
 							<div>
@@ -203,28 +203,32 @@ const VideoDialog = ({ _socket, nickname, id_my, id_companion, isVideoOn }) => {
 								</Button>
 							</div>
 						) : (
-							<div>
-								<IconButton
-									color="primary"
-									aria-label="call"
-									onClick={() => {
-										callUser(idToCall);
-										setName(nickname);
-									}}
-								>
-									<PhoneIcon fontSize="large" />
-									{/* ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,, */}
-								</IconButton>
-								<IconButton
-									color="secondary"
-									aria-label="call"
-									onClick={() => {
-										callUser(idToCall);
-										setName(nickname);
-									}}
-								>
-									<PhoneIcon fontSize="large" />
-								</IconButton>
+							<div className="row">
+								<div className="col-6 mt-3">
+									<IconButton
+										color="primary"
+										aria-label="call"
+										onClick={() => {
+											callUser(idToCall, false);
+											setName(nickname);
+										}}
+									>
+										Call
+										{/* ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,, */}
+									</IconButton>
+								</div>
+								<div className="col-6 mt-3">
+									<IconButton
+										color="secondary"
+										aria-label="call"
+										onClick={() => {
+											callUser(idToCall, true);
+											setName(nickname);
+										}}
+									>
+										Call holographic
+									</IconButton>
+								</div>
 							</div>
 						)}
 						{idToCall}
