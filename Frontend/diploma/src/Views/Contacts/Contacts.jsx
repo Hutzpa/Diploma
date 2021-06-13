@@ -34,8 +34,6 @@ class Contacts extends Component {
 
 	render() {
 		const { contacts } = this.state;
-		console.log("contacts");
-		console.log(contacts);
 		return (
 			<div>
 				<table className="table table-striped lead">

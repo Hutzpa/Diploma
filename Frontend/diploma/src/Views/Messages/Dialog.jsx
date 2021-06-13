@@ -83,14 +83,14 @@ class Dialog extends Component {
 				<div className={!isVideoOn ? "container" : ""}>
 					<div className="row">
 						{!isVideoOn ? (
-							<div className="col-sm">
+							<div className="">
 								<DialogHeader
 									firstName={companion.firstName}
 									lastName={companion.lastName}
 								/>
 							</div>
 						) : null}
-						<div className="col-sm">
+						<div className="">
 							<VideoDialog
 								_socket={socket}
 								nickname={
@@ -105,7 +105,7 @@ class Dialog extends Component {
 						<div>
 							<div
 								className="row"
-								style={{ height: 500, width: 1080, overflow: "scroll" }}
+								style={{ height: 500, width: 1000, overflow: "scroll" }}
 							>
 								<div className="col-sm-10">
 									{messages.map(({ Id, User, Text, SendingTime }) => (
@@ -121,16 +121,20 @@ class Dialog extends Component {
 								</div>
 							</div>
 							<div className="row">
-								<form onSubmit={(e) => this.handleSubmit(e)}>
-									<Input
-										name="message"
-										value={message}
-										onChange={this.handleChange}
-										inputType="text"
-										placeholder="Your message"
-										maxLength={2000}
-									/>
-								</form>
+								<div className="col"></div>
+								<div className="col-6">
+									<form onSubmit={(e) => this.handleSubmit(e)}>
+										<Input
+											name="message"
+											value={message}
+											onChange={this.handleChange}
+											inputType="text"
+											placeholder="Your message"
+											maxLength={2000}
+										/>
+									</form>
+								</div>
+								<div className="col"></div>
 							</div>
 						</div>
 					) : null}

@@ -5,12 +5,12 @@ import VideoDialog from "./VideoDialog";
 
 const DialogHeader = ({ firstName, lastName }) => {
 	return (
-		<div className="container text-danger">
+		<div className="container lead">
 			<Link to={ClientRouter.contacts}>
 				<h4>Get back</h4>
 			</Link>
 			<div className="lead">
-				{firstName} {lastName}
+				You are speaking with {firstName} {lastName}
 			</div>
 		</div>
 	);

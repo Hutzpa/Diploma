@@ -213,6 +213,7 @@ const VideoDialog = ({ _socket, nickname, id_my, id_companion, isVideoOn }) => {
 									}}
 								>
 									<PhoneIcon fontSize="large" />
+									{/* ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,, */}
 								</IconButton>
 								<IconButton
 									color="secondary"
