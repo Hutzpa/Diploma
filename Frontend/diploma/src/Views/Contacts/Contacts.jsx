@@ -24,10 +24,18 @@ class Contacts extends Component {
 		});
 		this.props.history.push(`${ClientRouter.chatroom}/${data.Id}`);
 	};
+	handleDelete = async (e, id) => {
+		e.preventDefault();
+		await SendReq.post(ServerRouter.deleteContact, {
+			ContactId: id,
+		});
+		window.location.reload();
+	};
 
 	render() {
 		const { contacts } = this.state;
-		//console.log(contacts);
+		console.log("contacts");
+		console.log(contacts);
 		return (
 			<div>
 				<table className="table table-striped lead">
@@ -54,6 +62,13 @@ class Contacts extends Component {
 										<td>
 											<form onSubmit={(e) => this.handleSubmit(e, contacts.Id)}>
 												<button className="btn btn-info">Dialog</button>
+											</form>
+										</td>
+										<td>
+											<form onSubmit={(e) => this.handleDelete(e, contacts.Id)}>
+												<button className="btn btn-danger">
+													Delete contact
+												</button>
 											</form>
 										</td>
 									</tr>

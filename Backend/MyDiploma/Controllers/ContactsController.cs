@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyDiploma.Data;
+using MyDiploma.Models.Contacts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,6 @@ namespace MyDiploma.Controllers
         }
 
         [HttpGet]
-        [Obsolete("Баг 2")]
         public async Task<IActionResult> GetContactsAsync()
         {
             Entities.User currentUser = (Entities.User)HttpContext.Items["User"];
@@ -32,10 +32,21 @@ namespace MyDiploma.Controllers
             var whereIsReceiver = await _context.Contacts.Include(o => o.Receiver).Where(o => o.Receiver.Id == currentUser.Id).Select(o => o.Sender).ToListAsync();
 
             var result = whereIsSender.Union(whereIsReceiver).Distinct().ToList();
-
-            
-
             return Ok(JsonSerializer.Serialize(result));
+        }
+
+        [HttpPost("deleteContact")]
+        public async Task<IActionResult> DeleteContactAsync(DeleteContact contactToDelete)
+        {
+            Entities.User currentUser = (Entities.User)HttpContext.Items["User"];
+
+            var contact = await _context.Contacts.FirstOrDefaultAsync(o => o.SenderId == contactToDelete.ContactId && o.ReceiverId == currentUser.Id);
+            if(contact==null)
+                contact = await _context.Contacts.FirstOrDefaultAsync(o => o.ReceiverId == contactToDelete.ContactId && o.SenderId == currentUser.Id);
+
+            _context.Contacts.Remove(contact);
+            await _context.SaveChangesAsync();
+            return Ok();
         }
     }
 }

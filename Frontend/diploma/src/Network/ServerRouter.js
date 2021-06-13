@@ -16,6 +16,7 @@ const ServerRouter = {
 	setProfilePicture: serverUrl + "profile/setProfilePicture",
 	avatar: serverUrl + "/content/photos/",
 	getPhoto: serverUrl + "user/getUserPhoto",
+	deleteContact: serverUrl + "contacts/deleteContact",
 };
 
 export default ServerRouter;
