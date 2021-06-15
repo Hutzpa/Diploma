@@ -19,7 +19,7 @@ io.on("connection", (socket) => {
 	socket.on("getUserData", ({ id }) => {
 		_userId = id;
 		socket.join(_userId);
-		console.log("User is waiting");
+		//console.log("User is waiting");
 	});
 
 	//Чатик
@@ -40,7 +40,7 @@ io.on("connection", (socket) => {
 		});
 	});
 	socket.on("disconnect", () => {
-		console.log(`${socket.id} has left!!!!`);
+		//console.log(`${socket.id} has left!!!!`);
 	});
 
 	//Видеозвонки
@@ -59,6 +59,12 @@ io.on("connection", (socket) => {
 	socket.on("answerCall", (data) =>
 		io.to(data.to).emit("callAccepted", data.signal)
 	);
+
+	socket.on("endTheCall", (to) => {
+		console.log(`${to} has ended conversation`);
+
+		io.emit("endConversation");
+	});
 });
 
 http.listen(PORT, () => {

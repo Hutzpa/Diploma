@@ -10,7 +10,7 @@ const DialogHeader = ({ firstName, lastName }) => {
 				<h4>Get back</h4>
 			</Link>
 			<div className="lead">
-				You are speaking with {firstName} {lastName}
+				Dialog with with {firstName} {lastName}. Your video -
 			</div>
 		</div>
 	);

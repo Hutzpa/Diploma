@@ -59,6 +59,11 @@ const VideoDialog = ({
 			setName(data.name);
 			setCallerSignal(data.signal);
 		});
+
+		socket.on("endConversation", () => {
+			console.log("ENDING CONVERSATION");
+			leaveCall();
+		});
 	}, []);
 
 	const togglePlay = () => {
@@ -66,7 +71,7 @@ const VideoDialog = ({
 		playCall ? audio.play() : audio.pause();
 	};
 	const callUser = (id, isHolog) => {
-		//setAmIHitCall(true);
+		setAmIHitCall(true);
 		//audio.play();
 		const peer = new Peer({
 			initiator: true,
@@ -135,6 +140,7 @@ const VideoDialog = ({
 	};
 
 	const leaveCall = () => {
+		socket.emit("endTheCall");
 		setCallEnded(true);
 		isVideoOn();
 		window.location.reload();
@@ -152,7 +158,11 @@ const VideoDialog = ({
 										<div>
 											<Video
 												video={myVideo}
-												style={{ width: "150px", height: "150px" }}
+												style={
+													callAccepted && !callEnded
+														? { width: "400px", height: "400px" }
+														: { width: "150px", height: "150px" }
+												}
 											></Video>
 										</div>
 									) : null}
@@ -234,7 +244,7 @@ const VideoDialog = ({
 											setName(nickname);
 										}}
 									>
-										Call
+										Call him
 									</IconButton>
 								</div>
 								<div className="col-6 mt-3">
@@ -246,7 +256,7 @@ const VideoDialog = ({
 											setName(nickname);
 										}}
 									>
-										Call holographic
+										Call him holographic
 									</IconButton>
 								</div>
 							</div>
