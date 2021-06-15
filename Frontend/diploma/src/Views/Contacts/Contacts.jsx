@@ -38,7 +38,7 @@ class Contacts extends Component {
 			<div>
 				<table className="table table-striped lead">
 					<tbody>
-						{contacts ? (
+						{contacts.length > 0 ? (
 							contacts.map((contacts) => {
 								return (
 									<tr key={contacts.Id}>
@@ -73,7 +73,11 @@ class Contacts extends Component {
 								);
 							})
 						) : (
-							<h4>You have no contacts</h4>
+							<tr>
+								<td>
+									<h5 className="lead text-center">You have no contacts</h5>
+								</td>
+							</tr>
 						)}
 					</tbody>
 				</table>

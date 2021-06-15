@@ -53,7 +53,7 @@ const VideoDialog = ({
 		setMe(id_my);
 
 		socket.on("callUser", (data) => {
-			togglePlay();
+			//togglePlay();
 			setReceivingCall(true);
 			setCaller(data.from);
 			setName(data.name);
@@ -67,7 +67,7 @@ const VideoDialog = ({
 	};
 	const callUser = (id, isHolog) => {
 		//setAmIHitCall(true);
-		audio.play();
+		//audio.play();
 		const peer = new Peer({
 			initiator: true,
 			trickle: false,
@@ -235,7 +235,6 @@ const VideoDialog = ({
 										}}
 									>
 										Call
-										{/* ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,, */}
 									</IconButton>
 								</div>
 								<div className="col-6 mt-3">

@@ -54,7 +54,7 @@ class Profile extends Component {
 		formData.append("formFile", photo);
 		formData.append("fileName", photoName);
 		await SendReq.post(ServerRouter.setProfilePicture, formData);
-		alert("Profile photo will change after relogin");
+		window.location.reload();
 	};
 	handleFileSelect = (e) => {
 		this.setState({ photo: e.target.files[0] });
@@ -64,18 +64,42 @@ class Profile extends Component {
 	render() {
 		const { currentUser } = this.state;
 		const { askedUser } = this.state;
+
+		console.log("askedUser");
+		console.log(askedUser);
+		console.log("currentUser");
+		console.log(currentUser);
 		return (
 			<div className="container">
 				<div className="row mt-3">
 					<div className="col"></div>
-					<div className="col-6">
+					<div className="col">
 						<Picture
-							name={currentUser.Photo}
+							name={
+								this.props.match.params.id ? askedUser.photo : currentUser.Photo
+							}
 							className="rounded"
-							height="150"
-							width="150"
+							height="300"
+							width="300"
 						/>
 					</div>
+					<div className="col"></div>
+				</div>
+				<div className="row ">
+					<div className="col"></div>
+					{this.props.match.params.id ? (
+						<div style={{ backgroundColor: "transparent" }}>
+							<p className="lead">First name - {askedUser.firstName}</p>
+							<p className="lead">Last name - {askedUser.lastName}</p>
+							<p className="lead ">Email - {askedUser.username}</p>
+						</div>
+					) : (
+						<div style={{ backgroundColor: "transparent" }}>
+							<p className="lead">First name - {currentUser.firstName}</p>
+							<p className="lead">Last name - {currentUser.lastName}</p>
+							<p className="lead">Email - {currentUser.username}</p>
+						</div>
+					)}
 					<div className="col"></div>
 				</div>
 				<div className="row">
@@ -86,6 +110,7 @@ class Profile extends Component {
 								encType="multipart/form-data"
 								method="post"
 							>
+								<label className="lead">Set profile photo</label>
 								<input
 									className="form-control-file"
 									type="file"

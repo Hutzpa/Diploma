@@ -3,25 +3,25 @@ video {
 }
 
 .topOne {
-	transform: rotate(0deg);
-	position: relative;
-	text-align: center;
-	left: 10%;
-}
-.bottomOne {
 	transform: rotate(180deg);
 	position: relative;
 	text-align: center;
 	left: 10%;
 }
+.bottomOne {
+	transform: rotate(0deg);
+	position: relative;
+	text-align: center;
+	left: 10%;
+}
 .middleRight {
-	transform: rotate(90deg);
+	transform: rotate(270deg);
 	position: relative;
 	text-align: end;
 	left: 10%;
 }
 .middleLeft {
-	transform: rotate(270deg);
+	transform: rotate(90deg);
 	position: relative;
 	text-align: start;
 	right: 23%;
