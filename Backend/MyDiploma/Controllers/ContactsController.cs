@@ -28,8 +28,8 @@ namespace MyDiploma.Controllers
         {
             Entities.User currentUser = (Entities.User)HttpContext.Items["User"];
 
-            var whereIsSender = await _context.Contacts.Include(o => o.Sender).Where(o => o.Sender.Id == currentUser.Id).Select(o => o.Receiver).ToListAsync();
-            var whereIsReceiver = await _context.Contacts.Include(o => o.Receiver).Where(o => o.Receiver.Id == currentUser.Id).Select(o => o.Sender).ToListAsync();
+            var whereIsSender = await _context.Contacts.Include(o => o.Sender).Where(o => o.Sender.Id == currentUser.Id && o.IsApproved==true).Select(o => o.Receiver).ToListAsync();
+            var whereIsReceiver = await _context.Contacts.Include(o => o.Receiver).Where(o => o.Receiver.Id == currentUser.Id && o.IsApproved==true).Select(o => o.Sender).ToListAsync();
 
             var result = whereIsSender.Union(whereIsReceiver).Distinct().ToList();
             return Ok(JsonSerializer.Serialize(result));
