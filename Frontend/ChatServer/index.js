@@ -60,9 +60,7 @@ io.on("connection", (socket) => {
 		io.to(data.to).emit("callAccepted", data.signal)
 	);
 
-	socket.on("endTheCall", (to) => {
-		console.log(`${to} has ended conversation`);
-
+	socket.on("endTheCall", () => {
 		io.emit("endConversation");
 	});
 });

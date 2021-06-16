@@ -7,24 +7,29 @@ const Message = ({ message, senderId, currentUserId, sendingTime }) => {
 
 	return isSentByCurUser ? (
 		<div
-			className="container rounded"
+			className="container rounded mt-1"
 			style={{ backgroundColor: "#00ffff", textAlign: "end" }}
 		>
-			<div className="lead">
+			<div className="lead ">
 				{/* //справа */}
-				<p>{ReactEmoji.emojify(message)}</p>
-				<p>{`${date.getDate()}.${date.getMonth()}-${date.getHours()}:${date.getMinutes()}`}</p>
+				<label>{ReactEmoji.emojify(message)}</label>
+				<br />
+				<label
+					style={{ fontSize: "x-small" }}
+				>{`${date.getDate()}.${date.getMonth()}.${date.getFullYear()} ${" "} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`}</label>{" "}
 			</div>
 		</div>
 	) : (
 		<div
-			className="container rounded"
+			className="container rounded mt-1"
 			style={{ backgroundColor: "#33ccff", textAlign: "start" }}
 		>
 			<div className="lead">
 				{/* //слева */}
-				<p>{ReactEmoji.emojify(message)}</p>
-				<p>{`${date.getDate()}.${date.getMonth()}-${date.getHours()}:${date.getMinutes()}`}</p>
+				<label>{ReactEmoji.emojify(message)}</label> <br />
+				<label
+					style={{ fontSize: "x-small" }}
+				>{`${date.getDate()}.${date.getMonth()}.${date.getFullYear()} ${" "} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`}</label>
 			</div>
 		</div>
 	);
