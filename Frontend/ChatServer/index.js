@@ -19,7 +19,6 @@ io.on("connection", (socket) => {
 	socket.on("getUserData", ({ id }) => {
 		_userId = id;
 		socket.join(_userId);
-		//console.log("User is waiting");
 	});
 
 	//Чатик
@@ -42,11 +41,6 @@ io.on("connection", (socket) => {
 	socket.on("disconnect", () => {
 		//console.log(`${socket.id} has left!!!!`);
 	});
-
-	//Видеозвонки
-	// socket.on("getSocketId", () => {
-	// 	socket.emit("me", socket.id);
-	// });
 
 	socket.on("callUser", (data) => {
 		io.to(data.userToCall).emit("callUser", {
